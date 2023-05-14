@@ -2,6 +2,11 @@
 
 {% block title %} {{ pet_type | capitalize }} {% endblock %} 
 
+{% block stylesheets %}
+<link href="../static/css/card.css" rel="stylesheet" />
+{% endblock %} 
+
+
 {% block content %}
 <h1>{{ pet_type | capitalize }}</h1>
 
@@ -9,14 +14,16 @@
     {% for pet in pets %}
     <div class="col">
         <div class="card h-100">
-            {% if pet.primary_photo_cropped.medium  %} 
-                <img src="{{ pet.primary_photo_cropped.medium }}" class="card-img-top" alt="...">
-            {% else %}
-                <img src="" class="card-img-top" alt="...">
-            {% endif %} 
+            <div class="image-container">
+                {% if pet.primary_photo_cropped.medium  %} 
+                    <img src="{{ pet.primary_photo_cropped.large }}" class="card-img-top" alt="...">
+                {% else %}
+                    <img src="" class="card-img-top" alt="...">
+                {% endif %} 
+            </div>
             <div class="card-body">
-                <h5 class="card-title">{{ pet.name }}</h5>
-                <p class="card-text">{{ pet.description }}</p>
+                <h2 class="card-title h4">{{ pet.name }}</h2>
+                <p class="card-subtitle mb-3">{{ pet.breeds.primary }}, {{ pet.age }}</p>
             </div>
         </div>
     </div>
