@@ -1,0 +1,49 @@
+html {
+    --primary-color: rgba(252, 52, 101, 1);
+    --background-color: rgba(252, 52, 101, .65);
+    --background-color-light: rgba(255, 222, 222, 1);
+    --primary-text: rgba(61, 61, 61, 1);
+    --secondary-text: rgba(61, 61, 61, .7);
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-logo__img {
+    max-width: 55px;
+    margin-right: 5px;
+}
+
+.header-logo__text {
+    font-size: 1.5em;
+    color: var(--primary-text);
+    text-decoration-style: unset;
+}
+
+.nav-item a {
+    color: var(--primary-text);
+}
+
+.nav-item .rounded-pill {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);      
+    color: var(--primary-color);
+}
+
+.nav-item .rounded-pill.active {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* Home */
+.hero {
+    background: url(../img/dog-bg.jpg) no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
