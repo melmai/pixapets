@@ -4,6 +4,16 @@ html {
     --background-color-light: rgba(255, 222, 222, 1);
     --primary-text: rgba(61, 61, 61, 1);
     --secondary-text: rgba(61, 61, 61, .7);
+    --header-font: 'Lato', sans-serif;
+    --body-font: 'Open Sans', sans-serif;
+}
+
+body {
+    font-family: var(--body-font);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--header-font);
 }
 
 .header-logo {
