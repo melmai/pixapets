@@ -3,6 +3,57 @@
 {% block title %} Pet Details {% endblock %} 
 
 {% block content %}
-<h1>PET DETAILS</h1>
-<p>pet details content goes here.</p>
+
+<h1>{{ pet["name"] }}</h1>
+
+<div class="container">
+
+  <div class="image-container">
+    {% if pet.primary_photo_cropped.medium  %} 
+        <img src="{{ pet.primary_photo_cropped.medium }}" class="card-img-top" alt="...">
+    {% else %}
+        <img src="" class="card-img-top" alt="...">
+    {% endif %} 
+  </div>
+
+  <div>
+    <dl>
+      <dt>Characteristics</dt>
+      <dd>
+        {% for characteric in pet["tags"] %}
+          {% if loop.index == pet["tags"] | length %}
+            {{ characteric }}
+          {% else %}
+            {{ characteric }},
+          {% endif %}
+        {% endfor %}
+      </dd>
+
+      <dt>Coat</dt>
+      <dd>{{ pet["coat"] }} Length, {{ pet["colors"]["primary"] }}</dd>
+
+      <dt>Health</dt>
+      <dd> 
+        {% for condition, status in pet["attributes"].items() %}
+          {% if status %}
+            {% if loop.index == pet["attributes"] | length %}
+              {{ condition | replace("_", " ") }}
+            {% else %}
+              {{ condition | replace("_", " ") }},
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </dd>
+    </dl>
+  </div>
+
+  <div>
+    <h3>About {{ pet["name"] }}</h3>
+    <p class="text-muted">{{ pet["breeds"]["primary"] }} | {{ pet["gender"] }} | {{ pet["age"] }}</p>
+    <p>{{ pet["description"] }}</p>
+  </div>
+
+</div>
+
+
 {% endblock %}

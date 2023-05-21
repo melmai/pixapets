@@ -38,6 +38,7 @@ def searchPets(pet_type):
 @app.route('/pets/<string:pet_type>/<int:pet_id>')
 def viewPetDetails(pet_type, pet_id):
     pet = get_pet(pet_id)
+    print(pet)
     return render_template('details.html', pet_type=pet_type, pet_id=pet_id, pet=pet)
 
 if __name__ == '__main__':
