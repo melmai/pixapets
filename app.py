@@ -4,7 +4,7 @@
 # flask --app app.py --debug run
 
 from flask import Flask, render_template
-from petfinder import get_pets
+from petfinder import get_pets, get_pet
 
 app = Flask(__name__)
 
@@ -32,9 +32,13 @@ def viewProfile():
 @app.route('/pets/<string:pet_type>')
 def searchPets(pet_type):
     pets = get_pets(pet_type)
-    print(pets)
+    print(pets[0])
     return render_template('pets.html', pet_type=pet_type, pets=pets)
 
+@app.route('/pets/<string:pet_type>/<int:pet_id>')
+def viewPetDetails(pet_type, pet_id):
+    pet = get_pet(pet_id)
+    return render_template('details.html', pet_type=pet_type, pet_id=pet_id, pet=pet)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug='true', port=5000)
