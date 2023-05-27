@@ -7,9 +7,9 @@
 {% endblock %} 
 
 {% block filter %}
-<section class="filter container">
-    <p>I'm looking for...</p>
-    <form action="GET">
+<section class="search-filter pt-4 pb-5 mb-4">
+    <form action="GET" class="container">
+        <p>I'm looking for...</p>
         {{ filter.csrf_token }}
         <div class="row">
             <div class="col">
