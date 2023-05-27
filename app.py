@@ -8,6 +8,7 @@ from petfinder import get_pets
 from filters import PetFilter
 
 app = Flask(__name__)
+app.secret_key="secret"
 
 
 @app.route('/')
@@ -34,7 +35,7 @@ def viewProfile():
 def searchPets(pet_type):
     pets = get_pets(pet_type)
     print(pets)
-    return render_template('pets.html', pet_type=pet_type, pets=pets)
+    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=PetFilter())
 
 
 if __name__ == '__main__':
