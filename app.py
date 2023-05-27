@@ -5,8 +5,10 @@
 
 from flask import Flask, render_template
 from petfinder import get_pets, get_pet
+from filters import PetFilter
 
 app = Flask(__name__)
+app.secret_key="secret"
 
 
 @app.route('/')
@@ -32,8 +34,8 @@ def viewProfile():
 @app.route('/pets/<string:pet_type>')
 def searchPets(pet_type):
     pets = get_pets(pet_type)
-    print(pets[0])
-    return render_template('pets.html', pet_type=pet_type, pets=pets)
+    print(pets)
+    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=PetFilter())
 
 @app.route('/pets/<string:pet_type>/<int:pet_id>')
 def viewPetDetails(pet_type, pet_id):
