@@ -1,6 +1,6 @@
 {% extends "base.html" %} 
 
-{% block title %} {{ pet_type | capitalize }} {% endblock %} 
+{% block title %} Pixapets | {{ pet_type | capitalize }}s {% endblock %} 
 
 {% block stylesheets %}
 <link href="../static/css/card.css" rel="stylesheet" />
@@ -39,7 +39,7 @@
 
 {% block content %}
 <!-- Title -->
-<h1>{{ pet_type | capitalize }}</h1>
+<h1 class="mb-4">{{ pet_type | capitalize }}s</h1>
 
 <!-- Cards -->
 <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
