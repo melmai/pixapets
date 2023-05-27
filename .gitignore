@@ -102,3 +102,7 @@ ENV/
 .vscode/
 .idea/
 __pycache__/
+
+# generated files
+pets.json
+token.json

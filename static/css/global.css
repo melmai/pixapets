@@ -58,3 +58,13 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     justify-content: center;
 }
+
+/* Search filter bar */
+.search-filter {
+    background-color: var(--background-color);
+}
+
+.search-filter p {
+    font-weight: 700;
+    font-family: var(--header-font);
+}
