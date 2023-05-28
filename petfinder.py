@@ -20,13 +20,23 @@ def generate_token():
 
     return token
 
+def get_token():
+    # get token
+    with open('token.json', 'r') as f:
+        token = json.load(f)
+
+    if not token:
+        token = generate_token()
+
+    return token
+
 
 def get_pets(pet_type):
     # get token
     # with open('token.json', 'r') as f:
     #     token = json.load(f)
         
-    token = generate_token()
+    token = get_token()
 
     # get pets
     pets = requests.get('https://api.petfinder.com/v2/animals',
@@ -42,3 +52,12 @@ def get_pets(pet_type):
         json.dump(pets, f)
 
     return pets
+
+
+# function get_breeds(pet_type):
+#     # get token
+#     token = get_token()
+
+#     # get breeds
+
+#     breeds = requests.get('https://api.petfinder.com/v2/types/' + pet_type + '/breeds',
