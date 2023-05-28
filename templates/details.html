@@ -1,10 +1,10 @@
 {% extends "base.html" %} 
 
-{% block title %} Pet Details {% endblock %} 
+{% block title %} PixaPets | {{ pet["name"] | capitalize }}s {% endblock %} 
 
 {% block content %}
 
-<h1>{{ pet["name"] }}</h1>
+<h1 class="mb-4">{{ pet["name"] | capitalize }}</h1>
 
 <div class="container">
 
