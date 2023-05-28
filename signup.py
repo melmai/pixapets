@@ -4,21 +4,21 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 
 class SignUp(FlaskForm):
     # first_name - string
-    first_name = StringField('First Name')
+    first_name = StringField('First Name', validators=[DataRequired()])
 
     # last_name - string
-    last_name = StringField('Last Name')
+    last_name = StringField('Last Name', validators=[DataRequired()])
 
     # email - email
-    email = EmailField('Email')
+    email = EmailField('Email', validators=[DataRequired(), Email()])
 
     # zipcode - integer
-    zipcode = IntegerField('Zip Code')
+    zipcode = IntegerField('Zip Code', validators=[DataRequired(), Length(min=5, max=5)])
 
     # password, confirm_password - password
     # TODO: Make sure passwords match
-    password = PasswordField('Password')
-    confirm_password = PasswordField('Confirm Password')
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo(password, message='Passwords must match')])
 
     # pet_type - select
     pet_type = SelectField('Pet Type', choices=[('None', ''), ('all', 'All'), ('dog', 'Dog'), ('cat', 'Cat')], validators=[Optional()])
