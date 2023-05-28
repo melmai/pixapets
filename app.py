@@ -39,11 +39,11 @@ def searchPets(pet_type):
     print(pets)
     return render_template('pets.html', pet_type=pet_type, pets=pets, filter=PetFilter())
 
-@app.route('/pets/<string:pet_type>/<int:pet_id>')
-def viewPetDetails(pet_type, pet_id):
+@app.route('/pet/<int:pet_id>')
+def viewPetDetails(pet_id):
     pet = get_pet(pet_id)
     print(pet)
-    return render_template('details.html', pet_type=pet_type, pet_id=pet_id, pet=pet)
+    return render_template('details.html', pet_id=pet_id, pet=pet)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug='true', port=5000)
