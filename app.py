@@ -18,25 +18,26 @@ def home():
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+
     if request.method =='POST':
         username = request.form['username']
         password = request.form['password']
         conn = create_connection()
         cursor = conn.cursor()
         cursor.execute('insert into users (username, password) values(?,?)', (username, password))
-        return redirect(url_for('login'))
-
-    return render_template('register.html')
+        return render_template('register.html')
 
 
 def create_connection():
-    conn = sqlite3.connect(app.config['users.spbpro'])
+    conn = sqlite3.connect(app.config['users'])
     return conn
 
 def create_user_table():
     conn = create_connection()
     cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users(id integer primary key autoincrement, username text unique not null, password text not null)''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS users(id integer primary key autoincrement, username varchar unique not null, password varchar not null, preferences text, favorites text )''')
     conn.commit()
     conn.close()
 
@@ -53,7 +54,7 @@ def login():
         if user and user[2] == password:
             return 'Login Successful'
         else:
-            return 'Invalid username or password'
+            return 'Oops! Invalid username or password :('  
     return render_template('login.html')
 
 
@@ -70,7 +71,7 @@ def searchPets(pet_type):
 
 
 if __name__ == '__main__':
-    app.config['users.spbpro'] = 'db/users.spbpro'
+    app.config['users'] = 'C:/Users/willi/OneDrive/Desktop/pixapets/db/users.db'
 
     create_user_table()
     app.run(host='0.0.0.0', debug='true', port=5000)
