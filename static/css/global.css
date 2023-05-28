@@ -60,11 +60,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Search filter bar */
-.search-filter {
+.search-filter, .user-information {
     background-color: var(--background-color);
 }
 
 .search-filter p {
+    font-weight: 700;
+    font-family: var(--header-font);
+}
+
+/* Sign Up form */
+.user-information p {
     font-weight: 700;
     font-family: var(--header-font);
 }

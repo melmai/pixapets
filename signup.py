@@ -21,14 +21,14 @@ class SignUp(FlaskForm):
     confirm_password = PasswordField('Confirm Password')
 
     # pet_type - select
-    pet_type = SelectField('Type', choices=[('all', 'Type (All)'), ('dog', 'Dog'), ('cat', 'Cat')], validators=[Optional()])
+    pet_type = SelectField('Pet Type', choices=[('None', ''), ('all', 'All'), ('dog', 'Dog'), ('cat', 'Cat')], validators=[Optional()])
     
     # breed - select
     # TODO: Generate list of breeds from API
-    breed = SelectField('Breed', choices=[('all', 'Breeds (All)'), ('baby', 'Baby'), ('young', 'Young'), ('adult', 'Adult'), ('senior', 'Senior')], validators=[Optional()])
+    breed = SelectField('Breed', choices=[('None', ''), ('all', 'All'), ('baby', 'Baby'), ('young', 'Young'), ('adult', 'Adult'), ('senior', 'Senior')], validators=[Optional()])
     
     # age - select
-    age = SelectField('Age', choices=[('all', 'Age (All)'), ('baby', 'Baby'), ('young', 'Young'), ('adult', 'Adult'), ('senior', 'Senior')], validators=[Optional()])
+    age = SelectField('Age', choices=[('None', ''), ('all', 'All'), ('baby', 'Baby'), ('young', 'Young'), ('adult', 'Adult'), ('senior', 'Senior')], validators=[Optional()])
     
     # TODO: Make this make sense
     distance = StringField("Distance", validators=[Optional()])
