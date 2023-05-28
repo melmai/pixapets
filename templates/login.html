@@ -4,6 +4,20 @@
 
 {% block content %}
 
-<h1>Login</h1>
+<h1 class="mb-4">Login</h1>
+
+<div>
+  <form action="GET">
+    {{ login.csrf_token }}
+
+    {{ login.email() }}
+    {{ login.email.label }}
+
+    {{ login.password() }}
+    {{ login.password.label }}
+
+    {{ login.signin_bttn(class="rounded-pill active") }}
+  </form>
+</div>
 
 {% endblock %}

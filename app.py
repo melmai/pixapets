@@ -7,6 +7,7 @@ from flask import Flask, render_template
 from petfinder import get_pets, get_pet
 from filters import PetFilter
 from signup import SignUp
+from login import Login
 
 app = Flask(__name__)
 app.secret_key="secret"
@@ -24,7 +25,7 @@ def register():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    return render_template('login.html', login=Login())
 
 
 @app.route('/profile')

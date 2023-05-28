@@ -5,3 +5,4 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 class Login(FlaskForm):
     email = EmailField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
+    signin_bttn = SubmitField('Sign In')
