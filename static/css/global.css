@@ -64,12 +64,20 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--background-color);
 }
 
-.search-filter p {
+.search-filter p, .user-information p {
     font-weight: 700;
     font-family: var(--header-font);
 }
 
 /* Signup form */
+.registration-title {
+    color: var(--primary-color);
+}
+
+.registration-body {
+    width: 100%;
+}
+
 .user-information p {
     font-weight: 700;
     font-family: var(--header-font);
