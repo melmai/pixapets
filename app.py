@@ -4,8 +4,10 @@
 # flask --app app.py --debug run
 
 from flask import Flask, render_template
-from petfinder import get_pets
+from petfinder import get_pets, get_pet
 from filters import PetFilter
+from signup import SignUp
+from login import Login
 
 app = Flask(__name__)
 app.secret_key="secret"
@@ -18,12 +20,12 @@ def home():
 
 @app.route('/register')
 def register():
-    return render_template('register.html')
+    return render_template('register.html', signup=SignUp())
 
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    return render_template('login.html', login=Login())
 
 
 @app.route('/profile')
@@ -37,6 +39,11 @@ def searchPets(pet_type):
     print(pets)
     return render_template('pets.html', pet_type=pet_type, pets=pets, filter=PetFilter())
 
+@app.route('/pet/<int:pet_id>')
+def viewPetDetails(pet_id):
+    pet = get_pet(pet_id)
+    print(pet)
+    return render_template('details.html', pet_id=pet_id, pet=pet)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug='true', port=5000)

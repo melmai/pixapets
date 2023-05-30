@@ -42,3 +42,25 @@ def get_pets(pet_type):
         json.dump(pets, f)
 
     return pets
+
+def get_pet(pet_id):
+    # get token
+    # with open('token.json', 'r') as f:
+    #     token = json.load(f)
+        
+    token = generate_token()
+
+    # get pets
+    pet = requests.get(f'https://api.petfinder.com/v2/animals/{pet_id}',
+                        headers={'Authorization': 'Bearer ' + token['access_token']},
+                        params={'id': pet_id})
+
+    # convert to json
+    pet = pet.json()
+    pet = pet['animal']
+
+    # save pets
+    with open('pet.json', 'w') as f:
+        json.dump(pet, f)
+
+    return pet
