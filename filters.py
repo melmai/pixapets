@@ -8,7 +8,7 @@ class PetFilter(FlaskForm):
     location = StringField("Location", render_kw={"placeholder": "Location"})
 
     # distance - select
-    distance = SelectField('Distance', choices=[('10', '10 Miles'), ('25', '25 Miles'), ('50', '50 Miles'), ('100', '100 Miles'), ('250', '250 Miles')], validators=[Optional()], render_kw={"placeholder": "100 miles (default)"})
+    distance = SelectField('Distance', choices=[('10', '10 Miles'), ('25', '25 Miles'), ('50', '50 Miles'), ('100', '100 Miles'), ('250', '250 Miles')], validators=[Optional()], default='100')
 
     # breed - select
     breed = SelectField('Breed', choices=[], validators=[Optional()], render_kw={"placeholder": "Type"})
