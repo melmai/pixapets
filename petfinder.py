@@ -52,3 +52,17 @@ def get_pet(pet_id):
     # convert to json
     return pet.json()['animal']
 
+def get_breeds(pet_type):
+    token = get_token()
+
+    # get pets
+    data = requests.get(f'https://api.petfinder.com/v2/types/{pet_type}/breeds',
+                            headers={'Authorization': 'Bearer ' + token['access_token']})
+
+    # convert to json
+    data = data.json()['breeds']
+
+    breeds = [("all", "All Breeds")]
+    breeds += [(breed['name'], breed['name']) for breed in data]
+
+    return breeds

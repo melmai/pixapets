@@ -4,7 +4,7 @@
 # flask --app app.py --debug run
 
 from flask import Flask, render_template
-from petfinder import get_pets, get_pet
+from petfinder import get_pets, get_pet, get_breeds
 from filters import PetFilter
 from signup import SignUp
 from login import Login
@@ -36,8 +36,10 @@ def viewProfile():
 @app.route('/pets/<string:pet_type>')
 def searchPets(pet_type):
     pets = get_pets(pet_type)
-    print(pets)
-    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=PetFilter())
+    breeds = get_breeds(pet_type)
+    filter = PetFilter()
+    filter.breed.choices = breeds
+    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter)
 
 @app.route('/pet/<int:pet_id>')
 def viewPetDetails(pet_id):
