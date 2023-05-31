@@ -32,32 +32,17 @@ def get_token():
 
 
 def get_pets(pet_type):        
+    token = get_token()
 
     # get pets
-    try:
-        token = get_token()
-        pets = requests.get(f'https://api.petfinder.com/v2/animals?type={pet_type}',
-                            headers={'Authorization': 'Bearer ' + token['access_token']})
-    except:
-        token = generate_token()
-        pets = requests.get(f'https://api.petfinder.com/v2/animals?type={pet_type}',
+    pets = requests.get(f'https://api.petfinder.com/v2/animals?type={pet_type}',
                             headers={'Authorization': 'Bearer ' + token['access_token']})
 
     # convert to json
-    pets = pets.json()
-    pets = pets['animals']
+    return pets.json()['animals']
 
-    # save pets
-    with open('pets.json', 'w') as f:
-        json.dump(pets, f)
-
-    return pets
 
 def get_pet(pet_id):
-    # get token
-    # with open('token.json', 'r') as f:
-    #     token = json.load(f)
-        
     token = get_token()
 
     # get pets
@@ -65,11 +50,5 @@ def get_pet(pet_id):
                         headers={'Authorization': 'Bearer ' + token['access_token']})
 
     # convert to json
-    pet = pet.json()
-    pet = pet['animal']
+    return pet.json()['animal']
 
-    # save pets
-    with open('pet.json', 'w') as f:
-        json.dump(pet, f)
-
-    return pet
