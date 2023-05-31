@@ -38,7 +38,7 @@ def searchPets(pet_type):
     pets = get_pets(pet_type)
     breeds = get_breeds(pet_type)
     filter = PetFilter()
-    filter.breed.choices = breeds
+    filter.breed.choices = filter.breed.choices + breeds
     return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter)
 
 @app.route('/pet/<int:pet_id>')
