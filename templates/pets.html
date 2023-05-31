@@ -9,7 +9,7 @@
 {% block filter %}
 <section class="search-filter pt-4 pb-5 mb-4">
     <form action="GET" class="container">
-        <p>My perfect {{ pet_type }} ...</p>
+        <p>My perfect {{ pet_type }}...</p>
         {{ filter.csrf_token }}
         <div class="row">
             <div class="col">
@@ -29,7 +29,7 @@
                 {{ filter.age(class="form-control")}}
             </div>
             <div class="col">
-                {{ filter.search_bttn(class="form-control")}}
+                {{ filter.search_bttn(class="form-control rounded-pill")}}
             </div>
         </div>
     </form>
