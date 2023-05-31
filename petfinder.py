@@ -25,23 +25,23 @@ def get_token():
     with open('token.json', 'r') as f:
         token = json.load(f)
 
-    if not token:
+    if not token['access_token']:
         token = generate_token()
 
     return token
 
 
-def get_pets(pet_type):
-    # get token
-    # with open('token.json', 'r') as f:
-    #     token = json.load(f)
-        
-    token = get_token()
+def get_pets(pet_type):        
 
     # get pets
-    pets = requests.get('https://api.petfinder.com/v2/animals',
-                        headers={'Authorization': 'Bearer ' + token['access_token']},
-                        params={'type': pet_type, 'limit': 100})
+    try:
+        token = get_token()
+        pets = requests.get(f'https://api.petfinder.com/v2/animals?type={pet_type}',
+                            headers={'Authorization': 'Bearer ' + token['access_token']})
+    except:
+        token = generate_token()
+        pets = requests.get(f'https://api.petfinder.com/v2/animals?type={pet_type}',
+                            headers={'Authorization': 'Bearer ' + token['access_token']})
 
     # convert to json
     pets = pets.json()
@@ -62,8 +62,7 @@ def get_pet(pet_id):
 
     # get pets
     pet = requests.get(f'https://api.petfinder.com/v2/animals/{pet_id}',
-                        headers={'Authorization': 'Bearer ' + token['access_token']},
-                        params={'id': pet_id})
+                        headers={'Authorization': 'Bearer ' + token['access_token']})
 
     # convert to json
     pet = pet.json()
