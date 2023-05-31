@@ -45,19 +45,22 @@
 <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
     {% for pet in pets %}
     <div class="col">
-        <div class="card h-100">
-            <div class="image-container">
-                {% if pet.primary_photo_cropped.medium  %} 
-                    <img src="{{ pet.primary_photo_cropped.large }}" class="card-img-top" alt="...">
-                {% else %}
-                    <img src="../static/img/snoop.jpg" class="card-img-top" alt="...">
-                {% endif %} 
+        <a href="/pet/{{ pet['id'] }}">
+            <div class="card h-100">
+                <div class="image-container">
+                    {% if pet.primary_photo_cropped.medium  %} 
+                        <img src="{{ pet.primary_photo_cropped.large }}" class="card-img-top" alt="...">
+                    {% else %}
+                        <img src="../static/img/snoop.jpg" class="card-img-top" alt="...">
+                    {% endif %} 
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title h4">{{ pet.name }}</h2>
+                    <p class="card-subtitle mb-3">{{ pet.breeds.primary }}, {{ pet.age }}</p>
+                </div>
             </div>
-            <div class="card-body">
-                <h2 class="card-title h4">{{ pet.name }}</h2>
-                <p class="card-subtitle mb-3">{{ pet.breeds.primary }}, {{ pet.age }}</p>
-            </div>
-        </div>
+        </a>
     </div>
     {% endfor %}
+</div>
 {% endblock %}

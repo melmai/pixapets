@@ -1,7 +1,92 @@
 {% extends "base.html" %} 
 
-{% block title %} Register {% endblock %} 
+{% block title %} PixaPets | Sign Up {% endblock %} 
+
+{% block full_width %}
+<div class="bg-primary">
+  <section class="container">
+    <h1 class="mb-4 registration-title">Sign Up</h1>
+
+    <div class="registration-body pt-4 pb-5 mb-4">
+      <!-- Registration Form -->
+      <form action="POST" class="container">
+        {{ signup.csrf_token }}
+    
+        <!-- Required User Info -->
+        <section class="user-information">
+          <p>USER INFORMATION</p>
+    
+          <div class="row">
+            <div class="col">
+              {{ signup.first_name(class="form-control") }}
+              {{ signup.first_name.label }}
+            </div>
+            <div class="col">
+              {{ signup.last_name(class="form-control") }}
+              {{ signup.last_name.label }}
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+              {{ signup.email(class="form-control") }}
+              {{ signup.email.label }}
+            </div>
+            <div class="col">
+              {{ signup.zipcode(class="form-control") }}
+              {{ signup.zipcode.label }}
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+              {{ signup.password(class="form-control") }}
+              {{ signup.password.label }}
+            </div>
+            <div class="col">
+              {{ signup.confirm_password(class="form-control") }}
+              {{ signup.confirm_password.label }}
+            </div>
+          </div>
+        </section>
+      
+  </section>
+</div>
+{% endblock %}
 
 {% block content %}
-<h1>Register</h1>
+
+    <!-- Optional Preference Configuration -->
+    <section>
+      <p>WHAT KIND OF PET ARE YOU LOOKING FOR (OPTIONAL)</p>
+
+      <div class="row">
+        <div class="col">
+          {{ signup.pet_type(class="form-control") }}
+          {{ signup.pet_type.label }}
+        </div>
+        <div class="col">
+          {{ signup.breed(class="form-control") }}
+          {{ signup.breed.label }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          {{ signup.age(class="form-control") }}
+          {{ signup.age.label }}
+        </div>
+        <div class="col">
+          {{ signup.distance(class="form-control") }}
+          {{ signup.distance.label }}
+        </div>
+      </div>
+
+      {{ signup.register_bttn(class="rounded-pill active") }}
+    </section>
+
+  </form>
+</div>
+
+
 {% endblock %}
