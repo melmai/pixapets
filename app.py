@@ -18,15 +18,15 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/register')
+@app.route('/register', methods = ['GET', 'POST'])
 def register():
     return render_template('register.html', signup=SignUp())
+  
 
-
-@app.route('/login')
+@app.route('/login', methods =['GET', 'POST'])
 def login():
     return render_template('login.html', login=Login())
-
+  
 
 @app.route('/profile')
 def viewProfile():
@@ -55,4 +55,7 @@ def viewPetDetails(pet_id):
     return render_template('details.html', pet_id=pet_id, pet=pet)
 
 if __name__ == '__main__':
+    app.config['users.spbpro'] = 'db/users.spbpro'
+
+    create_user_table()
     app.run(host='0.0.0.0', debug='true', port=5000)
