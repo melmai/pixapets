@@ -8,7 +8,7 @@
 
 {% block filter %}
 <section class="search-filter pt-4 pb-5 mb-4">
-    <form action="GET" class="container">
+    <form action="{{ url_for('search_pets', pet_type=pet_type) }}" method="POST" class="container">
         <p>My perfect {{ pet_type }}...</p>
         {{ filter.csrf_token }}
         <div class="row">
