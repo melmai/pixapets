@@ -2,57 +2,71 @@
 
 {% block title %} PixaPets | {{ pet["name"] | capitalize }} {% endblock %} 
 
-{% block content %}
-
-<h1 class="mb-4">{{ pet["name"] | capitalize }}</h1>
+{% block full_width %}
 
 <div class="container">
+  <h1 class="my-5">{{ pet["name"] | capitalize }}</h1>
+</div>
 
-  <div class="image-container">
-    {% if pet.primary_photo_cropped.medium  %} 
-        <img src="{{ pet.primary_photo_cropped.medium }}" class="card-img-top" alt="...">
-    {% else %}
-        <img src="" class="card-img-top" alt="...">
-    {% endif %} 
-  </div>
+<div class="container">
+  {% if pet.primary_photo_cropped.medium  %} 
+      <img src="{{ pet.primary_photo_cropped.medium }}" class="card-img-top" alt="...">
+  {% else %}
+      <img src="" class="card-img-top" alt="...">
+  {% endif %} 
+</div>
 
-  <div>
-    <dl>
-      <dt>Characteristics</dt>
-      <dd>
-        {% for characteric in pet["tags"] %}
-          {% if loop.index == pet["tags"] | length %}
-            {{ characteric }}
+<div class="container my-5">
+
+  <div class="d-flex flex-row">
+    <div class="w-25">
+
+      <dl class="details-list">
+
+        <dt>Characteristics</dt>
+        <dd>
+          {% if not pet["tags"] | length == 0 %}
+            {% for characteristic in pet["tags"] %}       
+                {% if loop.index == pet["tags"] | length %}
+                  {{ characteristic }}
+                {% else %}
+                  {{ characteristic }},
+                {% endif %}
+            {% endfor %}
           {% else %}
-            {{ characteric }},
+            None Listed
           {% endif %}
-        {% endfor %}
-      </dd>
+        </dd>
 
-      <dt>Coat</dt>
-      <dd>{{ pet["coat"] }} Length, {{ pet["colors"]["primary"] }}</dd>
+        <dt class="mt-3">Coat</dt>
+        <dd>{{ pet["coat"] }} Length, {{ pet["colors"]["primary"] }}</dd>
 
-      <dt>Health</dt>
-      <dd> 
-        {% for condition, status in pet["attributes"].items() %}
-          {% if status %}
-            {% if loop.index == pet["attributes"] | length %}
-              {{ condition | replace("_", " ") }}
-            {% else %}
-              {{ condition | replace("_", " ") }},
-            {% endif %}
+        <dt class="mt-3">Health</dt>
+        <dd> 
+          {% if not pet["attributes"] | length == 0 %}
+            {% for condition, status in pet["attributes"].items() %}
+              {% if status %}
+                {% if loop.index == pet["attributes"] | length %}
+                  {{ condition | replace("_", " ") }}
+                {% else %}
+                  {{ condition | replace("_", " ") }},
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            None Listed
           {% endif %}
-        {% endfor %}
-      </dd>
-    </dl>
-  </div>
+        </dd>
+      </dl>
+    </div>
 
-  <div>
-    <h3>About {{ pet["name"] }}</h3>
-    <p class="text-muted">{{ pet["breeds"]["primary"] }} | {{ pet["gender"] }} | {{ pet["age"] }}</p>
-    <p>{{ pet["description"] }}</p>
+    <div class="w-75">
+      <h3 class="mb-3">About {{ pet["name"] }}</h3>
+      <p class="text-muted">{{ pet["breeds"]["primary"] }} | {{ pet["gender"] }} | {{ pet["age"] }}</p>
+      <p>{{ pet["description"] }}</p>
+      <p><a href='{{ pet["url"] }}'>See More</a></p>
+    </div>
   </div>
-
 </div>
 
 
