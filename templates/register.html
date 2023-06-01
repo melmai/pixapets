@@ -9,7 +9,7 @@
 </div>
 
 <!-- Registration Form -->
-<form action="POST">
+<form action="{{ url_for('register') }}" method="POST">
   {{ signup.csrf_token }}
   
   <!-- Required User Info -->
