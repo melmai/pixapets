@@ -8,17 +8,17 @@
 
 {% block filter %}
 <section class="search-filter pt-4 pb-5 mb-4">
-    <form action="GET" class="container">
-        <p>I'm looking for...</p>
+    <form action="{{ url_for('search_pets', pet_type=pet_type) }}" method="POST" class="container">
+        <p>My perfect {{ pet_type }}...</p>
         {{ filter.csrf_token }}
         <div class="row">
             <div class="col">
-                {{ filter.type.label(class="visually-hidden") }}
-                {{ filter.type(class="form-control")}}
-            </div>
-            <div class="col">
                 {{ filter.location.label(class="visually-hidden") }}
                 {{ filter.location(class="form-control")}}
+            </div>
+            <div class="col">
+                {{ filter.distance.label(class="visually-hidden") }}
+                {{ filter.distance(class="form-control")}}
             </div>
             <div class="col">
                 {{ filter.breed.label(class="visually-hidden") }}
@@ -29,7 +29,7 @@
                 {{ filter.age(class="form-control")}}
             </div>
             <div class="col">
-                {{ filter.search_bttn(class="form-control")}}
+                {{ filter.search_bttn(class="form-control rounded-pill")}}
             </div>
         </div>
     </form>
@@ -45,19 +45,22 @@
 <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
     {% for pet in pets %}
     <div class="col">
-        <div class="card h-100">
-            <div class="image-container">
-                {% if pet.primary_photo_cropped.medium  %} 
-                    <img src="{{ pet.primary_photo_cropped.large }}" class="card-img-top" alt="...">
-                {% else %}
-                    <img src="../static/img/snoop.jpg" class="card-img-top" alt="...">
-                {% endif %} 
+        <a href="/pet/{{ pet['id'] }}">
+            <div class="card h-100">
+                <div class="image-container">
+                    {% if pet.primary_photo_cropped.medium  %} 
+                        <img src="{{ pet.primary_photo_cropped.large }}" class="card-img-top" alt="...">
+                    {% else %}
+                        <img src="../static/img/snoop.jpg" class="card-img-top" alt="...">
+                    {% endif %} 
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title h4">{{ pet.name }}</h2>
+                    <p class="card-subtitle mb-3">{{ pet.breeds.primary }}, {{ pet.age }}</p>
+                </div>
             </div>
-            <div class="card-body">
-                <h2 class="card-title h4">{{ pet.name }}</h2>
-                <p class="card-subtitle mb-3">{{ pet.breeds.primary }}, {{ pet.age }}</p>
-            </div>
-        </div>
+        </a>
     </div>
     {% endfor %}
+</div>
 {% endblock %}
