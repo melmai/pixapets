@@ -55,7 +55,4 @@ def viewPetDetails(pet_id):
     return render_template('details.html', pet_id=pet_id, pet=pet)
 
 if __name__ == '__main__':
-    app.config['users.spbpro'] = 'db/users.spbpro'
-
-    create_user_table()
     app.run(host='0.0.0.0', debug='true', port=5000)
