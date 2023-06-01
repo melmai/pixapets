@@ -20,14 +20,11 @@
       <a href="{{ url_for('home') }}" class="header-logo"><img src="../static/img/pixapets-logo.png" class="header-logo__img" alt="logo" /><span class="header-logo__text">PixaPets</span></a>
       <ul class="nav nav-pills">
           <li class="nav-item d-flex align-items-center">
-              <a class="nav-link" href="{{ url_for('searchPets', pet_type='dog') }}">Dogs</a>
+              <a class="nav-link" href="{{ url_for('search_pets', pet_type='dog') }}">Dogs</a>
           </li>
           <li class="nav-item d-flex align-items-center">
-              <a class="nav-link" href="{{ url_for('searchPets', pet_type='cat') }}">Cats</a>
+              <a class="nav-link" href="{{ url_for('search_pets', pet_type='cat') }}">Cats</a>
           </li>
-          <!-- <li class="nav-item">
-              <a class="nav-link link-light" href="{{ url_for('searchPets', pet_type='other') }}">Other</a>
-          </li> -->
       </ul>
       <ul class="nav user-links nav-pills">
             <li class="nav-item d-flex align-items-center me-3">

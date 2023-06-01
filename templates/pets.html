@@ -8,17 +8,17 @@
 
 {% block filter %}
 <section class="search-filter pt-4 pb-5 mb-4">
-    <form action="GET" class="container">
-        <p>I'm looking for...</p>
+    <form action="{{ url_for('search_pets', pet_type=pet_type) }}" method="POST" class="container">
+        <p>My perfect {{ pet_type }}...</p>
         {{ filter.csrf_token }}
         <div class="row">
             <div class="col">
-                {{ filter.type.label(class="visually-hidden") }}
-                {{ filter.type(class="form-control")}}
-            </div>
-            <div class="col">
                 {{ filter.location.label(class="visually-hidden") }}
                 {{ filter.location(class="form-control")}}
+            </div>
+            <div class="col">
+                {{ filter.distance.label(class="visually-hidden") }}
+                {{ filter.distance(class="form-control")}}
             </div>
             <div class="col">
                 {{ filter.breed.label(class="visually-hidden") }}
@@ -29,7 +29,7 @@
                 {{ filter.age(class="form-control")}}
             </div>
             <div class="col">
-                {{ filter.search_bttn(class="form-control")}}
+                {{ filter.search_bttn(class="form-control rounded-pill")}}
             </div>
         </div>
     </form>
