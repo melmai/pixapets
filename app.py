@@ -7,13 +7,16 @@ from petfinder import get_pets, get_pet, get_breeds
 from filters import PetFilter
 from signup import SignUp
 from login import Login
-from sqlalchemy import ForeignKey
+# from sqlalchemy import ForeignKey
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.secret_key="secret"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myDB.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# database instance
+db = SQLAlchemy(app)
 
 @app.route('/')
 def home():
@@ -23,14 +26,12 @@ def home():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     return render_template('register.html', signup=SignUp())
-  
 
 
 @app.route('/login', methods =['GET', 'POST'])
 def login():
     return render_template('login.html', login=Login())
 
-  
 
 @app.route('/profile')
 def viewProfile():
@@ -52,11 +53,13 @@ def search_pets(pet_type):
         
     return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter)
 
+
 @app.route('/pet/<int:pet_id>')
 def viewPetDetails(pet_id):
     pet = get_pet(pet_id)
     print(pet)
     return render_template('details.html', pet_id=pet_id, pet=pet)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug='true', port=5000)
