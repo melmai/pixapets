@@ -54,5 +54,5 @@ def viewPetDetails(pet_id):
     print(pet)
     return render_template('details.html', pet_id=pet_id, pet=pet)
 
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', debug='true', port=8000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug='true', port=5000)
