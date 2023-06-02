@@ -7,12 +7,6 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
-    def __init__(self, first_name, last_name, email, password):
-        self.first_name = first_name.title()
-        self.last_name = last_name.title()
-        self.email = email.lower()
-        self.password = password
-
     def __repr__(self):
         return f"User('{self.first_name}', '{self.last_name}', '{self.email}')"
     
@@ -21,29 +15,17 @@ class FavoritePet(db.Model):
     pet_id = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    def __init__(self, pet_id, user_id):
-        self.pet_id = pet_id
-        self.user_id = user_id
-
     def __repr__(self):
         return f"Favorite('{self.pet_id}', '{self.user_id}')"
     
 class Preferences(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    pet_type = db.Column(db.String(20), nullable=False)
-    location = db.Column(db.String(120), nullable=False)
-    distance = db.Column(db.Integer, nullable=False)
-    breed = db.Column(db.String(120), nullable=False)
-    age = db.Column(db.String(20), nullable=False)
-
-    def __init__(self, user_id, pet_type, location, distance, breed, age):
-        self.user_id = user_id
-        self.pet_type = pet_type
-        self.location = location
-        self.distance = distance
-        self.breed = breed
-        self.age = age
+    pet_type = db.Column(db.String(20), nullable=True)
+    location = db.Column(db.String(120), nullable=True)
+    distance = db.Column(db.Integer, nullable=True)
+    breed = db.Column(db.String(120), nullable=True)
+    age = db.Column(db.String(20), nullable=True)
 
     def __repr__(self):
         return f"Preferences('{self.user_id}', '{self.pet_type}', '{self.location}', '{self.distance}', '{self.breed}', '{self.age}')"

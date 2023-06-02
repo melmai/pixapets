@@ -30,26 +30,36 @@ with app.app_context():
 def home():
     return render_template('home.html')
 
-# from models import User, FavoritePet, Preferences
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
 
     form = SignUp()
     if request.method == 'POST':
-        # if not form.validate_on_submit():
-        #     flash('All fields are required.')
-        #     return render_template('register.html', signup=form)
-        # else:
-        new_user = User(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, password=form.password.data) 
-        db.session.add(new_user)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
 
-        flash('Thanks for registering!')
-        return redirect(url_for('home'))
+        # if fields are valid, create user
+        if form.validate_on_submit():
+            # create user object
+            new_user = User(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, password=form.password.data) 
+
+            # add user to database
+            db.session.add(new_user)
+            
+            # commit changes
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return render_template('register.html', signup=SignUp(), errors=form.errors)
+            
+            flash('Thanks for registering!')
+            return redirect(url_for('home'))
+        else:
+            if form.email.errors:
+                for error in form.email.errors:
+                    flash(error)
+            return render_template('register.html', signup=SignUp())
+
 
     return render_template('register.html', signup=SignUp())
 
