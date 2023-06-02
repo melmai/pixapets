@@ -3,90 +3,92 @@
 {% block title %} PixaPets | Sign Up {% endblock %} 
 
 {% block full_width %}
-<div class="bg-primary">
-  <section class="container">
-    <h1 class="mb-4 registration-title">Sign Up</h1>
 
-    <div class="registration-body pt-4 pb-5 mb-4">
-      <!-- Registration Form -->
-      <form action="POST" class="container">
-        {{ signup.csrf_token }}
-    
-        <!-- Required User Info -->
+<div class="container">
+  <h1 class="my-5 registration-title">Sign Up</h1>
+</div>
+
+<!-- Registration Form -->
+<form action="POST">
+  {{ signup.csrf_token }}
+
+  <!-- Required User Info -->
+  <div class="registration-required">
+    <section class="container">
+      <div class="pt-4 pb-5 mb-4">
         <section class="user-information">
-          <p>USER INFORMATION</p>
+          <p class="mb-4">USER INFORMATION</p>
     
           <div class="row">
             <div class="col">
-              {{ signup.first_name(class="form-control") }}
-              {{ signup.first_name.label }}
+              {{ signup.first_name(class="form-control mb-2") }}
+              {{ signup.first_name.label(class="mb-5") }}
             </div>
             <div class="col">
-              {{ signup.last_name(class="form-control") }}
-              {{ signup.last_name.label }}
+              {{ signup.last_name(class="form-control mb-2") }}
+              {{ signup.last_name.label(class="mb-5") }}
             </div>
           </div>
     
           <div class="row">
             <div class="col">
-              {{ signup.email(class="form-control") }}
-              {{ signup.email.label }}
+              {{ signup.email(class="form-control mb-2") }}
+              {{ signup.email.label(class="mb-5") }}
             </div>
             <div class="col">
-              {{ signup.zipcode(class="form-control") }}
-              {{ signup.zipcode.label }}
+              {{ signup.zipcode(class="form-control mb-2") }}
+              {{ signup.zipcode.label(class="mb-5") }}
             </div>
           </div>
     
           <div class="row">
             <div class="col">
-              {{ signup.password(class="form-control") }}
+              {{ signup.password(class="form-control mb-2") }}
               {{ signup.password.label }}
             </div>
             <div class="col">
-              {{ signup.confirm_password(class="form-control") }}
+              {{ signup.confirm_password(class="form-control mb-2") }}
               {{ signup.confirm_password.label }}
             </div>
           </div>
         </section>
       
-  </section>
-</div>
-{% endblock %}
+      </section>
+    </div>
 
-{% block content %}
+  <!-- Optional Preference Configuration -->
+  <div class="optional-information">
+    <section class="container">
+      <div class="pt-4 pb-5 mb-4">
+        <p class="mb-4">WHAT KIND OF PET ARE YOU LOOKING FOR (OPTIONAL)</p>
 
-    <!-- Optional Preference Configuration -->
-    <section>
-      <p>WHAT KIND OF PET ARE YOU LOOKING FOR (OPTIONAL)</p>
-
-      <div class="row">
-        <div class="col">
-          {{ signup.pet_type(class="form-control") }}
-          {{ signup.pet_type.label }}
+        <div class="row">
+          <div class="col">
+            {{ signup.pet_type(class="form-control mb-2 light-bg-form-fields") }}
+            {{ signup.pet_type.label(class="mb-5") }}
+          </div>
+          <div class="col">
+            {{ signup.breed(class="form-control mb-2 light-bg-form-fields") }}
+            {{ signup.breed.label(class="mb-5") }}
+          </div>
         </div>
-        <div class="col">
-          {{ signup.breed(class="form-control") }}
-          {{ signup.breed.label }}
+
+        <div class="row">
+          <div class="col">
+            {{ signup.age(class="form-control mb-2 light-bg-form-fields") }}
+            {{ signup.age.label(class="mb-5") }}
+          </div>
+          <div class="col">
+            {{ signup.distance(class="form-control mb-2 light-bg-form-fields") }}
+            {{ signup.distance.label(class="mb-5") }}
+          </div>
         </div>
+
+        {{ signup.register_bttn(class="rounded-pill active p-3 px-5 submit-button") }}
       </div>
-
-      <div class="row">
-        <div class="col">
-          {{ signup.age(class="form-control") }}
-          {{ signup.age.label }}
-        </div>
-        <div class="col">
-          {{ signup.distance(class="form-control") }}
-          {{ signup.distance.label }}
-        </div>
-      </div>
-
-      {{ signup.register_bttn(class="rounded-pill active") }}
     </section>
+  </div>
 
-  </form>
-</div>
-
+</form>
 
 {% endblock %}

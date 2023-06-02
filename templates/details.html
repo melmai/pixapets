@@ -4,16 +4,31 @@
 
 {% block content %}
 
-<h1 class="mb-4">{{ pet["name"] | capitalize }}</h1>
+<div class="container" style="background-color: rgba(252, 52, 101, 1); width: 100%;">
+  <h1 class="my-5">{{ pet["name"] | capitalize }}</h1>
+</div>
 
 <div class="container">
-
-  <div class="image-container">
-    {% if pet.primary_photo_cropped.medium  %} 
-        <img src="{{ pet.primary_photo_cropped.medium }}" class="card-img-top" alt="...">
-    {% else %}
-        <img src="" class="card-img-top" alt="...">
-    {% endif %} 
+  <div id="carouselExample" class="carousel slide">
+    <div class="carousel-inner">
+      {% for i in range((pet["photos"]|length)) %}
+      {% if i > 0 %}
+      <div class="carousel-item">
+      {% else %}
+      <div class="carousel-item active">
+      {% endif %}
+        <img src="{{ pet['photos'][i]['large'] }}" class="d-block w-100" alt="...">
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
 
   <div>
@@ -51,6 +66,7 @@
     <h3>About {{ pet["name"] }}</h3>
     <p class="text-muted">{{ pet["breeds"]["primary"] }} | {{ pet["gender"] }} | {{ pet["age"] }}</p>
     <p>{{ pet["description"] }}</p>
+    <h2>Read more about {{pet["name"]}} at: </h2>
   </div>
 
 </div>

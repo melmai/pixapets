@@ -64,21 +64,48 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--background-color);
 }
 
-.search-filter p, .user-information p {
+.search-filter p {
     font-weight: 700;
     font-family: var(--header-font);
+    margin-bottom: .5em;
+}
+
+.search-filter .rounded-pill {
+    background-color: white;
+    border: 2px solid var(--primary-color);      
+    color: var(--primary-color);
 }
 
 /* Signup form */
+.registration-required {
+    background-color: var(--primary-color);
+}
+
 .registration-title {
     color: var(--primary-color);
 }
 
-.registration-body {
-    width: 100%;
+.light-bg-form-fields {
+    background-color: var(--background-color-light);
 }
 
-.user-information p {
+.user-information, .optional-information p {
     font-weight: 700;
     font-family: var(--header-font);
+}
+
+.submit-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.details-list dt {
+    font-weight: 800;
+    font-size: large;
+}
+
+.details-list dd {
+    font-weight: 100;
+    font-size: medium;
 }
