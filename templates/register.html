@@ -9,7 +9,7 @@
 </div>
 
 <!-- Registration Form -->
-<form action="POST">
+<form action="{{ url_for('register') }}" method="POST">
   {{ signup.csrf_token }}
 
   <!-- Required User Info -->
@@ -18,37 +18,89 @@
       <div class="pt-4 pb-5 mb-4">
         <section class="user-information">
           <p class="mb-4">USER INFORMATION</p>
+
+          {% if errors %}
+            <p class="error">{{ errors }}</p>
+          {% endif %}
     
           <div class="row">
             <div class="col">
-              {{ signup.first_name(class="form-control mb-2") }}
-              {{ signup.first_name.label(class="mb-5") }}
+                {{ signup.first_name(class="form-control mb-2") }}
+                {{ signup.first_name.label(class="mb-5") }}
+
+                {% if signup.first_name.errors %}
+                    <ul class="errors">
+                    {% for error in signup.first_name.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
             <div class="col">
-              {{ signup.last_name(class="form-control mb-2") }}
-              {{ signup.last_name.label(class="mb-5") }}
+                {{ signup.last_name(class="form-control mb-2") }}
+                {{ signup.last_name.label(class="mb-5") }}
+
+                {% if signup.last_name.errors %}
+                    <ul class="errors">
+                    {% for error in signup.last_name.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
           </div>
     
           <div class="row">
             <div class="col">
-              {{ signup.email(class="form-control mb-2") }}
-              {{ signup.email.label(class="mb-5") }}
+                {{ signup.email(class="form-control mb-2") }}
+                {{ signup.email.label(class="mb-5") }}
+
+                {% if signup.email.errors %}
+                    <ul class="errors">
+                    {% for error in signup.email.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
             <div class="col">
-              {{ signup.zipcode(class="form-control mb-2") }}
-              {{ signup.zipcode.label(class="mb-5") }}
+                {{ signup.zipcode(class="form-control mb-2") }}
+                {{ signup.zipcode.label(class="mb-5") }}
+
+                {% if signup.zipcode.errors %}
+                    <ul class="errors">
+                    {% for error in signup.zipcode.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
           </div>
     
           <div class="row">
             <div class="col">
-              {{ signup.password(class="form-control mb-2") }}
-              {{ signup.password.label }}
+                {{ signup.password(class="form-control mb-2") }}
+                {{ signup.password.label }}
+
+                {% if signup.password.errors %}
+                    <ul class="errors">
+                    {% for error in signup.password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
             <div class="col">
-              {{ signup.confirm_password(class="form-control mb-2") }}
-              {{ signup.confirm_password.label }}
+                {{ signup.confirm_password(class="form-control mb-2") }}
+                {{ signup.confirm_password.label }}
+
+                {% if signup.confirm_password.errors %}
+                    <ul class="errors">
+                    {% for error in signup.confirm_password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
           </div>
         </section>
@@ -90,5 +142,32 @@
   </div>
 
 </form>
+
+<!-- Dynamic form field -->
+<script>
+  const typeField = document.getElementById('pet_type');
+  const breedField = document.getElementById('breed');
+  let options;
+
+  typeField.addEventListener("change", () => {
+
+    type = typeField.value.toLowerCase();
+
+    if (type !== "all") {
+      fetch(`/breeds/${type}`)
+      .then(res => res.json())
+      .then(data => {
+        options = "";
+        for (let breed of data) {
+          options += `<option value="${breed[0]}">${breed[1]}</option>`;
+        }
+        breedField.innerHTML = options;
+      })
+    } else {
+      breedField.innerHTML = `<option value="all">All Breeds</option>`;
+    }
+  });
+
+</script>
 
 {% endblock %}
