@@ -9,43 +9,47 @@ from filters import PetFilter
 from signup import SignUp
 from login import Login
 from flask_sqlalchemy import SQLAlchemy
+from database import db
 
 
 # Create a new Flask application instance
 app = Flask(__name__)
-app.secret_key="secret"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myDB.db'
+app.config['SECRET_KEY'] = "secret"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pixapets.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# database instance
-db = SQLAlchemy(app)
+# init database
+with app.app_context():
+    db.init_app(app)
+    from models import User, FavoritePet, Preferences
+    db.create_all()
+    db.session.commit()
 
 # routes
 @app.route('/')
 def home():
     return render_template('home.html')
 
-from models import User, FavoritePet, Preferences
+# from models import User, FavoritePet, Preferences
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
 
     form = SignUp()
-    # form.breed.choices = get_breeds(form.pet_type.data)
     if request.method == 'POST':
-        if not form.validate_on_submit():
-            flash('All fields are required.')
-            return render_template('register.html', signup=form)
-        else:
-            new_user = User(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, password=form.password.data) 
-            db.session.add(new_user)
-            try:
-                db.session.commit()
-            except:
-                db.session.rollback()
+        # if not form.validate_on_submit():
+        #     flash('All fields are required.')
+        #     return render_template('register.html', signup=form)
+        # else:
+        new_user = User(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, password=form.password.data) 
+        db.session.add(new_user)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
 
-            flash('Thanks for registering!')
-            return redirect(url_for('home'))
+        flash('Thanks for registering!')
+        return redirect(url_for('home'))
 
     return render_template('register.html', signup=SignUp())
 
@@ -91,4 +95,11 @@ def viewPetDetails(pet_id):
 
 
 if __name__ == '__main__':
+    # if os.path.exists('pixapets.db'):
+    #     os.remove('pixapets.db')
+
+    # with app.app_context():
+    #     db.create_all()
+
     app.run(host='0.0.0.0', debug='true', port=5000)
+
