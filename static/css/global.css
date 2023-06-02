@@ -81,7 +81,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--primary-color);
 }
 
-.registration-title {
+.pink-title {
     color: var(--primary-color);
 }
 
@@ -108,4 +108,9 @@ h1, h2, h3, h4, h5, h6 {
 .details-list dd {
     font-weight: 100;
     font-size: medium;
+}
+
+hr {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }

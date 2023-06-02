@@ -29,13 +29,15 @@ def login():
     return render_template('login.html', login=Login())
   
 
-@app.route('/profile')
-def viewProfile():
-    return render_template('profile.html')
+@app.route('/profile', methods = ['GET', 'POST'])
+def view_profile():
+    return render_template('profile.html', filter=PetFilter())
+
 
 @app.route('/edit_profile')
 def edit_profile():
     return render_template('edit_profile.html', edit=Edit_Profile())
+
 
 @app.route('/pets/<string:pet_type>', methods=['GET', 'POST'])
 def search_pets(pet_type):
