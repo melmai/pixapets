@@ -1,0 +1,94 @@
+{% extends "base.html" %} 
+
+{% block title %} PixaPets | Edit Profile {% endblock %} 
+
+{% block full_width %}
+
+<div class="container">
+  <h1 class="my-5 registration-title">User Profile</h1>
+</div>
+
+<!-- Registration Form -->
+<form action="POST">
+  {{ edit.csrf_token }}
+
+  <!-- Required User Info -->
+  <div class="registration-required">
+    <section class="container">
+      <div class="pt-4 pb-5 mb-4">
+        <section class="user-information">
+          <p class="mb-4">USER INFORMATION</p>
+    
+          <div class="row">
+            <div class="col">
+              {{ edit.first_name(class="form-control mb-2") }}
+              {{ edit.first_name.label(class="mb-5") }}
+            </div>
+            <div class="col">
+              {{ edit.last_name(class="form-control mb-2") }}
+              {{ edit.last_name.label(class="mb-5") }}
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+              {{ edit.email(class="form-control mb-2") }}
+              {{ edit.email.label(class="mb-5") }}
+            </div>
+            <div class="col">
+              {{ edit.zipcode(class="form-control mb-2") }}
+              {{ edit.zipcode.label(class="mb-5") }}
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+              {{ edit.password(class="form-control mb-2") }}
+              {{ edit.password.label }}
+            </div>
+            <div class="col">
+              {{ edit.confirm_password(class="form-control mb-2") }}
+              {{ edit.confirm_password.label }}
+            </div>
+          </div>
+        </section>
+      
+      </section>
+    </div>
+
+  <!-- Optional Preference Configuration -->
+  <div class="optional-information">
+    <section class="container">
+      <div class="pt-4 pb-5 mb-4">
+        <p class="mb-4">WHAT KIND OF PET ARE YOU LOOKING FOR (OPTIONAL)</p>
+
+        <div class="row">
+          <div class="col">
+            {{ edit.pet_type(class="form-control mb-2 light-bg-form-fields") }}
+            {{ edit.pet_type.label(class="mb-5") }}
+          </div>
+          <div class="col">
+            {{ edit.breed(class="form-control mb-2 light-bg-form-fields") }}
+            {{ edit.breed.label(class="mb-5") }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            {{ edit.age(class="form-control mb-2 light-bg-form-fields") }}
+            {{ edit.age.label(class="mb-5") }}
+          </div>
+          <div class="col">
+            {{ edit.distance(class="form-control mb-2 light-bg-form-fields") }}
+            {{ edit.distance.label(class="mb-5") }}
+          </div>
+        </div>
+
+        {{ edit.update_bttn(class="rounded-pill active p-3 px-5 submit-button") }}
+      </div>
+    </section>
+  </div>
+
+</form>
+
+{% endblock %}

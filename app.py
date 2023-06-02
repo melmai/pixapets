@@ -8,6 +8,7 @@ from petfinder import get_pets, get_pet, get_breeds
 from filters import PetFilter
 from signup import SignUp
 from login import Login
+from edit_profile import Edit_Profile
 
 app = Flask(__name__)
 app.secret_key="secret"
@@ -32,6 +33,9 @@ def login():
 def viewProfile():
     return render_template('profile.html')
 
+@app.route('/edit_profile')
+def edit_profile():
+    return render_template('edit_profile.html', edit=Edit_Profile())
 
 @app.route('/pets/<string:pet_type>', methods=['GET', 'POST'])
 def search_pets(pet_type):
