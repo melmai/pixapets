@@ -64,12 +64,12 @@
                 {% endif %}
             </div>
             <div class="col">
-                {{ signup.zipcode(class="form-control mb-2") }}
-                {{ signup.zipcode.label(class="mb-5") }}
+                {{ signup.location(class="form-control mb-2") }}
+                {{ signup.location.label(class="mb-5") }}
 
-                {% if signup.zipcode.errors %}
+                {% if signup.location.errors %}
                     <ul class="errors">
-                    {% for error in signup.zipcode.errors %}
+                    {% for error in signup.location.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                     </ul>
@@ -120,7 +120,7 @@
             {{ signup.pet_type.label(class="mb-5") }}
           </div>
           <div class="col">
-            {{ signup.breed(class="form-control mb-2 light-bg-form-fields") }}
+            {{ signup.breed(class="form-control mb-2 light-bg-form-fields", disabled="true") }}
             {{ signup.breed.label(class="mb-5") }}
           </div>
         </div>
@@ -154,6 +154,8 @@
     type = typeField.value.toLowerCase();
 
     if (type !== "all") {
+      breedField.disabled = false;
+
       fetch(`/breeds/${type}`)
       .then(res => res.json())
       .then(data => {
@@ -164,6 +166,7 @@
         breedField.innerHTML = options;
       })
     } else {
+      breedField.disabled = true;
       breedField.innerHTML = `<option value="all">All Breeds</option>`;
     }
   });

@@ -42,8 +42,34 @@ def register():
             # create user object
             new_user = User(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, password=form.password.data) 
 
+            # set optional values for user
+            if form.location.data:
+                new_user.location = form.location.data
+
             # add user to database
             db.session.add(new_user)
+
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+
+            # get user ID
+            user = User.query.filter_by(email=form.email.data).first()
+
+            # create null preferences and set optional values
+            new_preferences = Preferences(user_id=user.id)
+            if form.pet_type.data:
+                new_preferences.pet_type = form.pet_type.data
+            if form.distance.data:
+                new_preferences.distance = form.distance.data
+            if form.breed.data:
+                new_preferences.breed = form.breed.data
+            if form.age.data:
+                new_preferences.age = form.age.data
+            
+            # add preferences to database
+            db.session.add(new_preferences)
             
             # commit changes
             try:
