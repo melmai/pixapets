@@ -13,7 +13,7 @@ class SignUp(FlaskForm):
     email = EmailField('Email', validators=[DataRequired(), Email()])
 
     # zipcode - integer
-    zipcode = StringField('Zip Code', validators=[DataRequired(), Length(min=5, max=5)])
+    location = StringField('Zip Code', validators=[DataRequired(), Length(min=5, max=5)])
 
     # password, confirm_password - password
     # TODO: Make sure passwords match
@@ -24,13 +24,12 @@ class SignUp(FlaskForm):
     pet_type = SelectField('Pet Type', choices=[('all', 'All'), ('dog', 'Dog'), ('cat', 'Cat')], validators=[Optional()])
     
     # breed - select
-    breed = SelectField('Breed', choices=[], validators=[Optional()])
+    breed = SelectField('Breed', choices=[('all', 'All Breeds')], validators=[Optional()])
     
     # age - select
-    age = SelectField('Age', choices=[('all', 'All'), ('baby', 'Baby'), ('young', 'Young'), ('adult', 'Adult'), ('senior', 'Senior')], validators=[Optional()])
+    age = SelectField('Age', choices=[('all', 'All Ages'), ('baby', 'Baby'), ('young', 'Young'), ('adult', 'Adult'), ('senior', 'Senior')], validators=[Optional()])
     
-    # TODO: Make this make sense
-    distance = StringField("Distance", validators=[Optional()])
-
+    # distance - integer
+    distance = SelectField('Distance', choices=[('10', '10 Miles'), ('25', '25 Miles'), ('50', '50 Miles'), ('100', '100 Miles'), ('250', '250 Miles')], validators=[Optional()], default='100')
 
     register_bttn = SubmitField("Sign Up")
