@@ -4,12 +4,12 @@
 <link href="../static/css/card.css" rel="stylesheet" />
 {% endblock %} 
 
-{% block title %} PixaPets | Profile {% endblock %} 
+{% block title %} PixaPets | Dashboard {% endblock %} 
 
 {% block full_width %}
 
 <div class="container">
-  <h1 class="my-5 pink-title">Dashboard</h1>
+  <h1 class="my-5 pink-title">Hello {{ user["first_name"] }}!</h1>
 </div>
 
 <div class="container">
@@ -57,28 +57,41 @@
 
 <div class="container">
   <h2 class="mt-5">Favorites</h2>
-  <hr class="border-2 border-top w-25">
+  <hr class="hr-primary w-25 mb-4">
 </div>
 
 <!-- Cards of Favorite Pets -->
 <div class="container mt-4">
+  {% if favorites|length > 0 %}
   <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-    {% for pet in range(8) %}
+    {% for pet in favorites %}
     <div class="col">
       <a href="/pet/{{ pet['id'] }}">
         <div class="card h-100">
-          <div class="image-container">
-              <img src="../static/img/snoop.jpg" class="card-img-top" alt="...">
-          </div>
-          <div class="card-body">
-            <h2 class="card-title h4">A Favorited Pet</h2>
-            <p class="card-subtitle mb-3">cute borker, ageless</p>
-          </div>
+          <div class="image-container position-relative">
+            <button class="nav-link rounded-pill favorite position-absolute top-0 end-0 my-2 mx-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                </svg>
+            </button>
+            {% if pet.primary_photo_cropped.medium  %} 
+                <img src="{{ pet.primary_photo_cropped.large }}" class="card-img-top" alt="...">
+            {% else %}
+                <img src="../static/img/snoop.jpg" class="card-img-top" alt="...">
+            {% endif %} 
+        </div>
+        <div class="card-body">
+            <h2 class="card-title h4 card-name">{{ pet.name }}</h2>
+            <p class="card-subtitle mb-3 card-description">{{ pet.breeds.primary }}, {{ pet.age }}</p>
+        </div>
         </div>
       </a>
     </div>
     {% endfor %}
   </div>
+  {% else %}
+    <p>You have no favorites saved yet! Browse some <a href="{{ url_for('search_pets', pet_type='dog') }}">borkers</a> and <a href="{{ url_for('search_pets', pet_type='cat') }}">meowers</a> that need your love.</p>
+  {% endif %}
 </div>
 
 
