@@ -1,6 +1,6 @@
 from app import app, login_manager
 from flask import jsonify, render_template, request, redirect, url_for, session, flash
-from petfinder import get_pets, get_pet, get_breeds
+from petfinder import get_pets, get_pet, get_breeds, get_pets_by_number
 from filters import PetFilter
 from forms import SignUpForm, LoginForm, EditProfileForm
 from database import db
@@ -10,7 +10,10 @@ from werkzeug.security import check_password_hash
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    dogs = get_pets_by_number('dog', 4)
+    cats = get_pets_by_number('cat', 4)
+    
+    return render_template('home.html', dogs=dogs, cats=cats)
 
 
 @app.route('/register', methods = ['GET', 'POST'])
