@@ -1,0 +1,86 @@
+{% extends "base.html" %} 
+
+{% block stylesheets %}
+<link href="../static/css/card.css" rel="stylesheet" />
+{% endblock %} 
+
+{% block title %} PixaPets | Profile {% endblock %} 
+
+{% block full_width %}
+
+<div class="container">
+  <h1 class="my-5 pink-title">Dashboard</h1>
+</div>
+
+<div class="container">
+  <ul class="nav user-links nav-pills">
+    <li class="nav-item d-flex align-items-center me-3">
+      <a href="{{ url_for('edit_profile') }}" class="nav-link rounded-pill active px-4">Update Profile</a>
+    </li>
+    <li class="nav-item d-flex align-items-center">
+      <!-- TODO: Logout -->
+      <a href="" class="nav-link rounded-pill px-4">Logout</a>
+    </li>
+  </ul>
+</div>
+
+<section class="search-filter pt-4 pb-5 my-5">
+    <form action="{{ url_for('search_pets', pet_type=filter.pet_type.value) }}" method="POST" class="container">
+        <p>I'm looking for...</p>
+        {{ filter.csrf_token }}
+        <div class="row">
+            <div class="col">
+              {{ filter.pet_type.label(class="visually-hidden") }}
+              {{ filter.pet_type(class="form-control")}}
+            </div>
+            <div class="col">
+                {{ filter.location.label(class="visually-hidden") }}
+                {{ filter.location(class="form-control")}}
+            </div>
+            <div class="col">
+                {{ filter.distance.label(class="visually-hidden") }}
+                {{ filter.distance(class="form-control")}}
+            </div>
+            <div class="col">
+                {{ filter.breed.label(class="visually-hidden") }}
+                {{ filter.breed(class="form-control")}}
+            </div>
+            <div class="col">
+                {{ filter.age.label(class="visually-hidden") }}
+                {{ filter.age(class="form-control")}}
+            </div>
+            <div class="col">
+                {{ filter.search_bttn(class="form-control rounded-pill")}}
+            </div>
+        </div>
+    </form>
+</section>
+
+<div class="container">
+  <h2 class="mt-5">Favorites</h2>
+  <hr class="border-2 border-top w-25">
+</div>
+
+<!-- Cards of Favorite Pets -->
+<div class="container mt-4">
+  <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for pet in range(8) %}
+    <div class="col">
+      <a href="/pet/{{ pet['id'] }}">
+        <div class="card h-100">
+          <div class="image-container">
+              <img src="../static/img/snoop.jpg" class="card-img-top" alt="...">
+          </div>
+          <div class="card-body">
+            <h2 class="card-title h4">A Favorited Pet</h2>
+            <p class="card-subtitle mb-3">cute borker, ageless</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+{% endblock %}
