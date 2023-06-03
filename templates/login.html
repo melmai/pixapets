@@ -8,7 +8,7 @@
 
 <div class="d-flex justify-content-center">
   <div class="w-25">
-    <form action="GET">
+    <form action="{{ url_for('login') }}" method="POST">
       {{ login.csrf_token }}
 
       {{ login.email(class="form-control mb-2 light-bg-form-fields") }}
