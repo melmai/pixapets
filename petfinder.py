@@ -35,13 +35,16 @@ def get_token():
 def is_token_valid(token):
     # check if token is valid
     mod_date = os.path.getmtime(token)
+    print(f"token saved: {mod_date}")
+    print(f"token expires: {mod_date + 3600}")
+    print(f"current time: {time.time()}")
     if mod_date + 3600 < time.time():
-        return True
-    return False
+        return False
+    return True
 
 
 def get_pets(pet_type, **kwargs):        
-    token = generate_token()
+    token = get_token()
     location = kwargs.get('location', 98404)
     distance = int(kwargs.get('distance', 100))
     breed = kwargs.get('breed', 'all')
@@ -67,7 +70,7 @@ def get_pets(pet_type, **kwargs):
 
 
 def get_pet(pet_id):
-    token = generate_token()
+    token = get_token()
 
     # get pets
     pet = requests.get(f'https://api.petfinder.com/v2/animals/{pet_id}',
@@ -77,7 +80,7 @@ def get_pet(pet_id):
     return pet.json()['animal']
 
 def get_breeds(pet_type):
-    token = generate_token()
+    token = get_token()
 
     # get pets
     data = requests.get(f'https://api.petfinder.com/v2/types/{pet_type}/breeds',
