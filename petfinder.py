@@ -54,6 +54,16 @@ def get_pets(pet_type, **kwargs):
     # convert to json
     return pets
 
+def get_pets_by_number(pet_type, number):
+    token = generate_token()
+    
+    # get pets
+    request_url = f'https://api.petfinder.com/v2/animals?type={pet_type}&limit={number}'
+    pets = requests.get(request_url, headers={'Authorization': 'Bearer ' + token['access_token']})
+
+    # convert to json
+    return pets.json()['animals']
+
 
 def get_pet(pet_id):
     token = generate_token()
