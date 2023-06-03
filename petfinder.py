@@ -77,7 +77,12 @@ def get_pet(pet_id):
                         headers={'Authorization': 'Bearer ' + token['access_token']})
 
     # convert to json
-    return pet.json()['animal']
+    try:
+        pet = pet.json()['animal'] 
+    except KeyError as e: # if pet not found
+        pet = "pet not found"
+    
+    return pet
 
 def get_breeds(pet_type):
     token = get_token()
