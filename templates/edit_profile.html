@@ -1,0 +1,144 @@
+{% extends "base.html" %} 
+
+{% block title %} PixaPets | Edit Profile {% endblock %} 
+
+{% block full_width %}
+
+<div class="container">
+  <h1 class="my-5 pink-title">User Profile</h1>
+  
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+ 
+  
+  <script>
+    var alertList = document.querySelectorAll('.alert');
+    alertList.forEach(function (alert) {
+      new bootstrap.Alert(alert)
+    })
+  </script>
+  
+</div>
+
+<!-- Registration Form -->
+<form action="{{ url_for('edit_profile', user_id=user_id) }}" method="POST">
+  {{ edit.csrf_token }}
+
+  <!-- Required User Info -->
+  <div class="registration-required">
+    <section class="container">
+      <div class="pt-4 pb-5 mb-4">
+        <section class="user-information">
+          <p class="mb-4">USER INFORMATION</p>
+    
+          <div class="row">
+            <div class="col">
+              {{ edit.first_name(class="form-control mb-2") }}
+              {{ edit.first_name.label(class="mb-5") }}
+            </div>
+            <div class="col">
+              {{ edit.last_name(class="form-control mb-2") }}
+              {{ edit.last_name.label(class="mb-5") }}
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+              {{ edit.email(class="form-control mb-2") }}
+              {{ edit.email.label(class="mb-5") }}
+            </div>
+            <div class="col">
+              {{ edit.location(class="form-control mb-2") }}
+              {{ edit.location.label(class="mb-5") }}
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+              {{ edit.password(class="form-control mb-2") }}
+              {{ edit.password.label }}
+            </div>
+            <div class="col">
+              {{ edit.confirm_password(class="form-control mb-2") }}
+              {{ edit.confirm_password.label }}
+            </div>
+          </div>
+        </section>
+      
+      </section>
+    </div>
+
+  <!-- Optional Preference Configuration -->
+  <div class="optional-information">
+    <section class="container">
+      <div class="pt-4 pb-5 mb-4">
+        <p class="mb-4">WHAT KIND OF PET ARE YOU LOOKING FOR (OPTIONAL)</p>
+
+        <div class="row">
+          <div class="col">
+            {{ edit.pet_type(class="form-control mb-2 light-bg-form-fields") }}
+            {{ edit.pet_type.label(class="mb-5") }}
+          </div>
+          <div class="col">
+            {{ edit.breed(class="form-control mb-2 light-bg-form-fields") }}
+            {{ edit.breed.label(class="mb-5") }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            {{ edit.age(class="form-control mb-2 light-bg-form-fields") }}
+            {{ edit.age.label(class="mb-5") }}
+          </div>
+          <div class="col">
+            {{ edit.distance(class="form-control mb-2 light-bg-form-fields") }}
+            {{ edit.distance.label(class="mb-5") }}
+          </div>
+        </div>
+
+        {{ edit.update_bttn(class="rounded-pill active p-3 px-5 submit-button") }}
+      </div>
+    </section>
+  </div>
+
+</form>
+
+<!-- Dynamic form field -->
+<script>
+  const typeField = document.getElementById('pet_type');
+  const breedField = document.getElementById('breed');
+  let options;
+
+  typeField.addEventListener("change", () => {
+
+    type = typeField.value.toLowerCase();
+
+    if (type !== "all") {
+      breedField.disabled = false;
+
+      fetch(`/breeds/${type}`)
+      .then(res => res.json())
+      .then(data => {
+        options = "";
+        for (let breed of data) {
+          options += `<option value="${breed[0]}">${breed[1]}</option>`;
+        }
+        breedField.innerHTML = options;
+      })
+    } else {
+      breedField.disabled = true;
+      breedField.innerHTML = `<option value="all">All Breeds</option>`;
+    }
+  });
+
+</script>
+
+{% endblock %}

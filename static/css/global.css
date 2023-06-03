@@ -1,0 +1,155 @@
+html {
+    --primary-color: rgba(252, 52, 101, 1);
+    --background-color: rgba(252, 52, 101, .65);
+    --background-color-light: rgba(255, 222, 222, 1);
+    --primary-text: rgba(61, 61, 61, 1);
+    --secondary-text: rgba(61, 61, 61, .7);
+    --header-font: 'Lato', sans-serif;
+    --body-font: 'Open Sans', sans-serif;
+}
+
+body {
+    font-family: var(--body-font);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--header-font);
+    font-weight: 300;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-logo__img {
+    max-width: 55px;
+    margin-right: 5px;
+}
+
+.header-logo__text {
+    font-size: 1.5em;
+    color: var(--primary-text);
+    text-decoration-style: unset;
+}
+
+.nav-item a {
+    color: var(--primary-text);
+}
+
+.nav-item .rounded-pill {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);      
+    color: var(--primary-color);
+}
+
+.nav-item .rounded-pill:hover {
+    background-color: var(--background-color);
+    border: 2px solid var(--background-color);      
+    color: white;
+}
+
+.nav-item .rounded-pill.active {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.nav-item .rounded-pill.active:hover {
+    background-color: var(--background-color);
+    border: 2px solid var(--background-color);      
+    color: white;
+}
+
+/* Home */
+.hero {
+    background: url(../img/dog-bg-pink.jpg) no-repeat center center;
+    background-size: cover;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Search filter bar */
+.search-filter, .user-information {
+    background-color: var(--background-color);
+}
+
+.search-filter p {
+    font-weight: 700;
+    font-family: var(--header-font);
+    margin-bottom: .5em;
+}
+
+.search-filter .rounded-pill {
+    background-color: white;
+    border: 2px solid var(--primary-color);      
+    color: var(--primary-color);
+}
+
+.search-filter .rounded-pill:hover {
+    border: 2px solid var(--primary-color);      
+    background-color: var(--primary-color);    
+    color: white;
+}
+
+/* Signup form */
+.registration-required {
+    background-color: var(--primary-color);
+}
+
+.pink-title {
+    color: var(--primary-color);
+}
+
+.light-bg-form-fields {
+    background-color: var(--background-color-light);
+}
+
+.user-information, .optional-information p {
+    font-weight: 700;
+    font-family: var(--header-font);
+}
+
+.submit-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.details-list dt {
+    font-weight: 800;
+    font-size: large;
+}
+
+.details-list dd {
+    font-weight: 100;
+    font-size: medium;
+}
+
+.hr-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    opacity: 1;
+    border: 0;
+    height: 5px;
+    width: 90px;
+}
+
+.favorite {
+    background-color: white;
+    border: 2px solid var(--primary-color);      
+    color: var(--primary-color);
+}
+
+.favorite:hover {
+    background-color: var(--primary-color);    
+    color: white;
+}
+
+.home-btn {
+    background-color: white;
+    border: 2px solid var(--primary-color);      
+    color: var(--primary-color);
+}

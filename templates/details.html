@@ -1,0 +1,107 @@
+{% extends "base.html" %} 
+
+{% block title %} PixaPets | {{ pet["name"] | capitalize }} {% endblock %} 
+
+{% block stylesheets %}
+<link rel="stylesheet" href="../static/css/details.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container" >
+  <div class="d-flex flex-row">
+    <h1 class="mt-5 mb-0 w-75">{{ pet["name"] | capitalize }}</h1>
+    <div class="w-25 d-flex justify-content-end align-items-end">
+      <button class="nav-link rounded-pill favorite">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <hr class="divider hr-primary mb-4">
+</div>
+
+<!-- Carousel -->
+<div class="container">
+  <div id="carousel" class="carousel slide">
+    <div class="carousel-inner">
+      {% for i in range((pet["photos"]|length)) %}
+      {% if i > 0 %}
+      <div class="carousel-item">
+      {% else %}
+      <div class="carousel-item active">
+      {% endif %}
+        <img src="{{ pet['photos'][i]['large'] }}" class="d-block w-100" alt="...">
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div class="container my-5">
+  <div class="d-flex flex-row">
+    <div class="w-25">
+      <dl class="details-list">
+
+        {% if (pet["tags"] | length) > 0 %}
+        <dt>Characteristics</dt>
+        <dd class="mb-3 text-muted">
+          {% for characteric in pet["tags"] %}
+            {% if loop.index == pet["tags"] | length %}
+              {{ characteric }}
+            {% else %}
+              {{ characteric }},
+            {% endif %}
+          {% endfor %}
+        </dd>
+        {% endif %}
+
+        {% if pet["coat"] or pet["colors"]["primary"] %}
+        <dt>Coat</dt>
+        <dd class="mb-3 text-muted">
+          {% if pet["coat"] %}
+            <p class="mb-0">{{ pet["coat"] }} Length</p>
+          {% endif %}
+          {% if pet["colors"]["primary"] %}
+            <p>{{ pet["colors"]["primary"] }}</p>
+          {% endif %}
+        </dd>
+        {% endif %}
+
+        {% if pet["attributes"] %}
+
+        <dt>Health</dt>
+        <dd class="mb-3 text-muted"> 
+          <p>
+          {% for condition, status in pet["attributes"].items() %}
+                {{ condition | replace("_", " ") | capitalize }}: 
+                {{ "Yes" if status else "No"}}<br>
+          {% endfor %}
+          </p>
+        </dd>
+        {% endif %}
+
+      </dl>
+    </div>
+
+    <div class="w-75 ps-5">
+      <h3 class="mb-2">About {{ pet["name"] }}</h3>
+      <p class="text-muted">{{ pet["breeds"]["primary"] }} | {{ pet["gender"] }} | {{ pet["age"] }}</p>
+      <p>{{ pet["description"] }}</p>
+      <p>Read more about {{pet["name"]}} on their page at <a href='{{ pet["url"] }}'>Petfinder</a>!</p>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

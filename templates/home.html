@@ -1,8 +1,92 @@
 {% extends "base.html" %} 
 
-{% block title %} Home {% endblock %} 
+{% block title %} Pixapets | Home {% endblock %} 
+
+{% block stylesheets %}
+<link href="../static/css/card.css" rel="stylesheet" />
+{% endblock %} 
+
+{% block hero %}
+<div class="p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center hero">
+    <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+      <h1 class="display-4 lh-1">Adopt from PixaPets</h1>
+      <p class="lead">Boofers wow very biscit corgo length boy, mlem. Pupperino adorable doggo vvv boofers pats boofers, I am bekom fat mlem heckin good boys tungg borkf long doggo, super chub doggo mlem heck.</p>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+        <button type="button" class="btn btn-lg px-4 me-md-2 fw-bold rounded-pill home-btn">Sign up</button>
+        <button type="button" class="btn btn-lg px-4 rounded-pill home-btn">Login</button>
+      </div>
+    </div>
+    <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+        <!-- <img class="rounded-lg-3" src="../static/img/dog-bg.jpg" alt=""> -->
+    </div>
+  </div>
+{% endblock %}
 
 {% block content %}
-<h1>HOME</h1>
-<p>Home page content goes here.</p>
+
+<div class="container my-4">
+  <h1 class="mt-5">Dogs</h1>
+  <hr class="hr-primary w-25 mb-4">
+
+  <!-- Dog Cards -->
+  <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for dog in dogs %}
+    <div class="col">
+        <a href="/pet/{{ dog['id'] }}" class="text-decoration-none">
+            <div class="card h-100">
+                <div class="image-container position-relative">
+                    <button class="nav-link rounded-pill favorite position-absolute top-0 end-0 my-2 mx-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                        </svg>
+                    </button>
+                    {% if dog.primary_photo_cropped.medium  %} 
+                        <img src="{{ dog.primary_photo_cropped.large }}" class="card-img-top" alt="...">
+                    {% else %}
+                        <img src="../static/img/snoop.jpg" class="card-img-top" alt="...">
+                    {% endif %} 
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title h4 card-name">{{ dog.name }}</h2>
+                    <p class="card-subtitle mb-3 card-description">{{ dog.breeds.primary }}, {{ dog.age }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="container my-4">
+  <h1 class="mt-5">Cats</h1>
+  <hr class="hr-primary w-25 mb-4">
+
+  <!-- Cat Cards -->
+  <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for cat in cats %}
+    <div class="col">
+        <a href="/pet/{{ cat['id'] }}" class="text-decoration-none">
+            <div class="card h-100">
+                <div class="image-container position-relative">
+                    <button class="nav-link rounded-pill favorite position-absolute top-0 end-0 my-2 mx-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                        </svg>
+                    </button>
+                    {% if cat.primary_photo_cropped.medium  %} 
+                        <img src="{{ cat.primary_photo_cropped.large }}" class="card-img-top" alt="...">
+                    {% else %}
+                        <img src="../static/img/snoop.jpg" class="card-img-top" alt="...">
+                    {% endif %} 
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title h4 card-name">{{ cat.name }}</h2>
+                    <p class="card-subtitle mb-3 card-description">{{ cat.breeds.primary }}, {{ cat.age }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

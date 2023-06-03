@@ -1,7 +1,176 @@
 {% extends "base.html" %} 
 
-{% block title %} Register {% endblock %} 
+{% block title %} PixaPets | Sign Up {% endblock %} 
 
-{% block content %}
-<h1>Register</h1>
+{% block full_width %}
+
+<div class="container">
+  <h1 class="my-5 registration-title">Sign Up</h1>
+</div>
+
+<!-- Registration Form -->
+<form action="{{ url_for('register') }}" method="POST">
+  {{ signup.csrf_token }}
+
+  <!-- Required User Info -->
+  <div class="registration-required">
+    <section class="container">
+      <div class="pt-4 pb-5 mb-4">
+        <section class="user-information">
+          <p class="mb-4">USER INFORMATION</p>
+
+          {% if errors %}
+            <p class="error">{{ errors }}</p>
+          {% endif %}
+    
+          <div class="row">
+            <div class="col">
+                {{ signup.first_name(class="form-control mb-2") }}
+                {{ signup.first_name.label(class="mb-5") }}
+
+                {% if signup.first_name.errors %}
+                    <ul class="errors">
+                    {% for error in signup.first_name.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="col">
+                {{ signup.last_name(class="form-control mb-2") }}
+                {{ signup.last_name.label(class="mb-5") }}
+
+                {% if signup.last_name.errors %}
+                    <ul class="errors">
+                    {% for error in signup.last_name.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+                {{ signup.email(class="form-control mb-2") }}
+                {{ signup.email.label(class="mb-5") }}
+
+                {% if signup.email.errors %}
+                    <ul class="errors">
+                    {% for error in signup.email.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="col">
+                {{ signup.location(class="form-control mb-2") }}
+                {{ signup.location.label(class="mb-5") }}
+
+                {% if signup.location.errors %}
+                    <ul class="errors">
+                    {% for error in signup.location.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col">
+                {{ signup.password(class="form-control mb-2") }}
+                {{ signup.password.label }}
+
+                {% if signup.password.errors %}
+                    <ul class="errors">
+                    {% for error in signup.password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="col">
+                {{ signup.confirm_password(class="form-control mb-2") }}
+                {{ signup.confirm_password.label }}
+
+                {% if signup.confirm_password.errors %}
+                    <ul class="errors">
+                    {% for error in signup.confirm_password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+          </div>
+        </section>
+      
+      </section>
+    </div>
+
+  <!-- Optional Preference Configuration -->
+  <div class="optional-information">
+    <section class="container">
+      <div class="pt-4 pb-5 mb-4">
+        <p class="mb-4">WHAT KIND OF PET ARE YOU LOOKING FOR (OPTIONAL)</p>
+
+        <div class="row">
+          <div class="col">
+            {{ signup.pet_type(class="form-control mb-2 light-bg-form-fields") }}
+            {{ signup.pet_type.label(class="mb-5") }}
+          </div>
+          <div class="col">
+            {{ signup.breed(class="form-control mb-2 light-bg-form-fields", disabled="true") }}
+            {{ signup.breed.label(class="mb-5") }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            {{ signup.age(class="form-control mb-2 light-bg-form-fields") }}
+            {{ signup.age.label(class="mb-5") }}
+          </div>
+          <div class="col">
+            {{ signup.distance(class="form-control mb-2 light-bg-form-fields") }}
+            {{ signup.distance.label(class="mb-5") }}
+          </div>
+        </div>
+
+        {{ signup.register_bttn(class="rounded-pill active p-3 px-5 submit-button") }}
+      </div>
+    </section>
+  </div>
+
+</form>
+
+<!-- Dynamic form field -->
+<script>
+  const typeField = document.getElementById('pet_type');
+  const breedField = document.getElementById('breed');
+  let options;
+
+  typeField.addEventListener("change", () => {
+
+    type = typeField.value.toLowerCase();
+
+    if (type !== "all") {
+      breedField.disabled = false;
+
+      fetch(`/breeds/${type}`)
+      .then(res => res.json())
+      .then(data => {
+        options = "";
+        for (let breed of data) {
+          options += `<option value="${breed[0]}">${breed[1]}</option>`;
+        }
+        breedField.innerHTML = options;
+      })
+    } else {
+      breedField.disabled = true;
+      breedField.innerHTML = `<option value="all">All Breeds</option>`;
+    }
+  });
+
+</script>
+
 {% endblock %}

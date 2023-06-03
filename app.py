@@ -3,35 +3,29 @@
 # This command will run the app on localhost:5000 and will allow you to see the refreshed app in your browser
 # flask --app app.py --debug run
 
-from flask import Flask, render_template
+from flask import Flask
+from database import db
+from flask_login import LoginManager
 
+
+# Create a new Flask application instance
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "secret"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pixapets.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# init database
+with app.app_context():
+    db.init_app(app)
+    import models
+    db.create_all()
+    db.session.commit()
 
-@app.route('/')
-def viewHomePage():
-    return render_template('home.html')
+# create login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
 
-
-@app.route('/register')
-def register():
-    return render_template('register.html')
-
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-
-@app.route('/profile')
-def viewProfile():
-    return render_template('profile.html')
-
-
-@app.route('/search')
-def searchPets():
-    return render_template('search.html')
-
+import routes
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug='true', port=5000)
