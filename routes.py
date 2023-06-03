@@ -96,7 +96,7 @@ def update_favorite(pet_id, user_id):
             return "Tried to remove but failed"
         return jsonify("Removed")
     else:
-        return jsonify(add_favorite(pet_id, user_id))
+        return add_favorite(pet_id, user_id)
 
 
 def add_favorite(pet_id, user_id):
@@ -196,11 +196,13 @@ def search_pets(pet_type):
     if request.method == 'POST':
         breed = filter.breed.data.lower()
         pets = get_pets(pet_type, location=filter.location.data, distance=filter.distance.data, breed=breed, age=filter.age.data)
-        print(pets)
     else:
         pets = get_pets(pet_type)
+
+    favorite_pets = FavoritePet.query.filter_by(user_id=current_user.id).all()
+    favorite_ids = [pet.pet_id for pet in favorite_pets]
         
-    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter)
+    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter, favorite_ids=favorite_ids)
 
 
 @app.route('/pet/<int:pet_id>')
