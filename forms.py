@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, SelectField,EmailFi
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Optional
 
 class SignUpForm(FlaskForm):
+    """Form for signing up"""
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
     email = EmailField('Email', validators=[DataRequired(), Email()])
@@ -16,9 +17,11 @@ class SignUpForm(FlaskForm):
     register_bttn = SubmitField("Sign Up")
 
 class LoginForm(FlaskForm):
+    """Form for logging in"""
     email = EmailField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     signin_bttn = SubmitField('Sign In')
 
 class EditProfileForm(SignUpForm):
+    """Form for editing profile"""
     update_bttn = SubmitField("Update Profile")

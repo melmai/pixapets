@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(UserMixin, db.Model):
+    """User Model for storing user related details"""
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
@@ -20,6 +21,7 @@ class User(UserMixin, db.Model):
         return f"User('{self.first_name}', '{self.last_name}', '{self.email}')"
     
 class FavoritePet(db.Model):
+    """Favorite Pet Model for storing favorite pets"""
     id = db.Column(db.Integer, primary_key=True)
     pet_id = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -28,6 +30,7 @@ class FavoritePet(db.Model):
         return f"Favorite('{self.pet_id}', '{self.user_id}')"
     
 class Preferences(db.Model):
+    """Preferences Model for storing user preferences"""
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     pet_type = db.Column(db.String(20), nullable=True)
