@@ -2,17 +2,20 @@
 
 {% block title %} PixaPets | {{ pet["name"] | capitalize }} {% endblock %} 
 
-{% block content %}
+{% block full_width %}
 
-<div class="container" style="background-color: rgba(252, 52, 101, 1); width: 100%;">
-  <h1 class="my-5">{{ pet["name"] | capitalize }}</h1>
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button class="btn btn-light" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-    </svg></button>
+<div class="container" >
+  <div class="d-flex flex-row">
+    <h1 class="mt-5 mb-0 w-75">{{ pet["name"] | capitalize }}</h1>
+    <div class="w-25 d-flex justify-content-end align-items-end">
+      <button class="nav-link rounded-pill favorite">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+        </svg>
+      </button>
+    </div>
   </div>
-
-
+  <hr class="hr-primary w-25 mb-4">
 </div>
 
 <div class="container">
@@ -37,45 +40,50 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
+</div>
 
-  <div>
-    <dl>
-      <dt>Characteristics</dt>
-      <dd>
-        {% for characteric in pet["tags"] %}
-          {% if loop.index == pet["tags"] | length %}
-            {{ characteric }}
-          {% else %}
-            {{ characteric }},
-          {% endif %}
-        {% endfor %}
-      </dd>
+<div class="container my-5">
+  <div class="d-flex flex-row">
+    <div class="w-25">
+      <dl class="details-list">
 
-      <dt>Coat</dt>
-      <dd>{{ pet["coat"] }} Length, {{ pet["colors"]["primary"] }}</dd>
-
-      <dt>Health</dt>
-      <dd> 
-        {% for condition, status in pet["attributes"].items() %}
-          {% if status %}
-            {% if loop.index == pet["attributes"] | length %}
-              {{ condition | replace("_", " ") }}
+        <dt>Characteristics</dt>
+        <dd>
+          {% for characteric in pet["tags"] %}
+            {% if loop.index == pet["tags"] | length %}
+              {{ characteric }}
             {% else %}
-              {{ condition | replace("_", " ") }},
+              {{ characteric }},
             {% endif %}
-          {% endif %}
-        {% endfor %}
-      </dd>
-    </dl>
-  </div>
+          {% endfor %}
+        </dd>
 
-  <div>
-    <h3>About {{ pet["name"] }}</h3>
-    <p class="text-muted">{{ pet["breeds"]["primary"] }} | {{ pet["gender"] }} | {{ pet["age"] }}</p>
-    <p>{{ pet["description"] }}</p>
-    <h2>Read more about {{pet["name"]}} at: </h2>
-  </div>
+        <dt class="mt-3">Coat</dt>
+        <dd>{{ pet["coat"] }} Length, {{ pet["colors"]["primary"] }}</dd>
 
+        <dt class="mt-3">Health</dt>
+        <dd> 
+          {% for condition, status in pet["attributes"].items() %}
+            {% if status %}
+              {% if loop.index == pet["attributes"] | length %}
+                {{ condition | replace("_", " ") }}
+              {% else %}
+                {{ condition | replace("_", " ") }},
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </dd>
+
+      </dl>
+    </div>
+
+    <div class="w-75">
+      <h3 class="mb-3">About {{ pet["name"] }}</h3>
+      <p class="text-muted">{{ pet["breeds"]["primary"] }} | {{ pet["gender"] }} | {{ pet["age"] }}</p>
+      <p>{{ pet["description"] }}</p>
+      <p>Read more about {{pet["name"]}} on their page at <a href='{{ pet["url"] }}'>Petfinder</a>!</p>
+    </div>
+  </div>
 </div>
 
 
