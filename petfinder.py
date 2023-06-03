@@ -47,7 +47,7 @@ def get_pets(pet_type, **kwargs):
     breed = kwargs.get('breed', 'all')
     age = kwargs.get('age', 'all')
 
-    request_url = f'https://api.petfinder.com/v2/animals?type={pet_type}'
+    request_url = f'https://api.petfinder.com/v2/animals?type={pet_type}&limit=50'
     if location:
         request_url += f'&location={location}&distance={distance}'
     if breed != 'all':
