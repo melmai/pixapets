@@ -206,7 +206,7 @@ def search_pets(pet_type):
 
 
 @app.route('/pet/<int:pet_id>')
-def viewPetDetails(pet_id):
+def view_pet_details(pet_id):
     """Return details for a given pet."""
     pet = get_pet(pet_id)
     is_favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=current_user.id).first()

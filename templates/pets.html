@@ -45,7 +45,7 @@
 <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
     {% for pet in pets %}
     <div class="col">
-        <a href="/pet/{{ pet['id'] }}" class="text-decoration-none">
+        <a href="{{ url_for('view_pet_details', pet_id=pet.id) }}" class="text-decoration-none">
             <div class="card h-100">
                 <div class="image-container position-relative">
                     <button class="nav-link rounded-pill favorite position-absolute top-0 end-0 my-2 mx-2 {{ 'favorite-active' if pet.id in favorite_ids else '' }}" data-pet="{{ pet.id }}" data-user="{{ current_user.id}}">
