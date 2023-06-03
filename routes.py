@@ -82,7 +82,23 @@ def get_breeds_by_type(pet_type):
     """Return a list of breeds for a given pet type."""
     return jsonify(get_breeds(pet_type))
 
-@app.route('pet/add/<int:pet_id>/<int:user_id>')
+@app.route('/favorite/<int:pet_id>/<int:user_id>')
+def update_favorite(pet_id, user_id):
+    """Update a user's favorites."""
+    favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=user_id).first()
+
+    if favorite:
+        db.session.delete(favorite)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "Tried to remove but failed"
+        return "Removed"
+    else:
+        return add_favorite(pet_id, user_id)
+
+
 def add_favorite(pet_id, user_id):
     """Add a pet to a user's favorites."""
     new_favorite = FavoritePet(pet_id=pet_id, user_id=user_id)
@@ -92,9 +108,10 @@ def add_favorite(pet_id, user_id):
         db.session.commit()
     except:
         db.session.rollback()
-        return False
+        return "Tried to add but failed"
     
-    return pet_id
+    return jsonify("Added to favorites")
+
 
 
 @app.route('/dashboard/<int:user_id>')
