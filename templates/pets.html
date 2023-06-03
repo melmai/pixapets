@@ -45,7 +45,7 @@
 <div class="row row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
     {% for pet in pets %}
     <div class="col">
-        <a href="/pet/{{ pet['id'] }}">
+        <a href="/pet/{{ pet['id'] }}" class="text-decoration-none">
             <div class="card h-100">
                 <div class="image-container">
                     {% if pet.primary_photo_cropped.medium  %} 
@@ -55,8 +55,8 @@
                     {% endif %} 
                 </div>
                 <div class="card-body">
-                    <h2 class="card-title h4">{{ pet.name }}</h2>
-                    <p class="card-subtitle mb-3">{{ pet.breeds.primary }}, {{ pet.age }}</p>
+                    <h2 class="card-title h4 card-name">{{ pet.name }}</h2>
+                    <p class="card-subtitle mb-3 card-description">{{ pet.breeds.primary }}, {{ pet.age }}</p>
                 </div>
             </div>
         </a>
