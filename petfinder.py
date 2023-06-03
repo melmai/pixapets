@@ -3,8 +3,8 @@ import json
 import os, time
 
 # credentials for the petfinder API
-api_key = 'aNCEiHafkArcpvUKdOQS6o9SW2E3ujo0oMoHSP3sYTttQr8l35'
-api_secret = 'DYJ4KkyWMcCHMysIEwDTLRwnMIj8Vm1jLoQB1s1f'
+api_key = 'iINAY9o00BynDYDHjGE294wnIP2MiuXXA8tlawH2L0e8jwcNpt'
+api_secret = 'yOgc3gLY40k7z1eJKalmMKuzdpir7450mxMLBusX'
 
 def generate_token():
     # generate token
@@ -61,7 +61,7 @@ def get_pets(pet_type, **kwargs):
     # get pets
     pets = requests.get(request_url, headers={'Authorization': 'Bearer ' + token['access_token']})
     pets = pets.json()['animals']
-
+    
     # convert to json
     return pets
 
@@ -77,7 +77,7 @@ def get_pet(pet_id):
     return pet.json()['animal']
 
 def get_breeds(pet_type):
-    token = get_token()
+    token = generate_token()
 
     # get pets
     data = requests.get(f'https://api.petfinder.com/v2/types/{pet_type}/breeds',
