@@ -204,10 +204,12 @@ def search_pets(pet_type):
     else:
         pets = get_pets(pet_type)
 
-    favorite_pets = FavoritePet.query.filter_by(user_id=current_user.id).all()
-    favorite_ids = [pet.pet_id for pet in favorite_pets]
+    if current_user.is_authenticated:
+        favorite_pets = FavoritePet.query.filter_by(user_id=current_user.id).all()
+        favorite_ids = [pet.pet_id for pet in favorite_pets]
+        return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter, favorite_ids=favorite_ids)
         
-    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter, favorite_ids=favorite_ids)
+    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter, favorite_ids=[])
 
 
 @app.route('/pet/<int:pet_id>')
