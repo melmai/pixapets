@@ -17,6 +17,10 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 300;
 }
 
+/* ---------------------------------- 
+ *  Header and navigation
+ * ----------------------------------*/
+
 .header-logo {
     display: flex;
     align-items: center;
@@ -61,17 +65,9 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
-/* Home */
-.hero {
-    background: url(../img/dog-bg-pink.jpg) no-repeat center center;
-    background-size: cover;
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Search filter bar */
+/* ---------------------------------- 
+ *  Search filter bar
+ * ----------------------------------*/
 .search-filter, .user-information {
     background-color: var(--background-color);
 }
@@ -94,7 +90,65 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
-/* Signup form */
+/* ---------------------------------- 
+ *  Card styles
+ * ----------------------------------*/
+ .image-container {
+    max-height: 300px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.card-name {
+    color: var(--primary-text);
+}
+
+.card-description {
+    color: var(--secondary-text);
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.favorite {
+    background-color: white;
+    border: 2px solid var(--primary-color);      
+    color: var(--primary-color);
+}
+
+.favorite:hover {
+    background-color: var(--primary-color);    
+    color: white;
+}
+
+.favorite-active {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+/* ---------------------------------- 
+ *  Home
+ * ----------------------------------*/
+.hero {
+    background: url(../img/dog-bg-pink.jpg) no-repeat center center;
+    background-size: cover;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-btn {
+    background-color: white;
+    border: 2px solid var(--primary-color);      
+    color: var(--primary-color);
+}
+
+/* ---------------------------------- 
+ *  Signup form 
+ * ----------------------------------*/
+
 .registration-required {
     background-color: var(--primary-color);
 }
@@ -137,24 +191,30 @@ h1, h2, h3, h4, h5, h6 {
     width: 90px;
 }
 
-.favorite {
-    background-color: white;
-    border: 2px solid var(--primary-color);      
-    color: var(--primary-color);
+/* ---------------------------------- 
+ *  Details page 
+ * ----------------------------------*/
+
+/* Carousel */
+.carousel-item {
+    max-height: 450px;
+    background: #333;
 }
 
-.favorite:hover {
-    background-color: var(--primary-color);    
-    color: white;
+.carousel-item img {
+    object-fit: contain;
+    object-position: center;
+    overflow: hidden;
+    height: 50vh;
 }
 
-.favorite-active {
-    color: white;
-    background-color: var(--primary-color);
+/* Sidebar */
+.details-list dt {
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    font-size: .95em;
 }
 
-.home-btn {
-    background-color: white;
-    border: 2px solid var(--primary-color);      
-    color: var(--primary-color);
+.detail-list dd {
+    font-size: .9em;
 }

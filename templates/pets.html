@@ -2,10 +2,6 @@
 
 {% block title %} Pixapets | {{ pet_type | capitalize }}s {% endblock %} 
 
-{% block stylesheets %}
-<link href="../static/css/card.css" rel="stylesheet" />
-{% endblock %} 
-
 {% block filter %}
 <section class="search-filter pt-4 pb-5 mb-4">
     <form action="{{ url_for('search_pets', pet_type=pet_type) }}" method="POST" class="container">
