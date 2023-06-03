@@ -10,6 +10,7 @@ from werkzeug.security import check_password_hash
 
 @app.route('/')
 def home():
+    """Return the home page."""
     dogs = get_pets_by_number('dog', 4)
     cats = get_pets_by_number('cat', 4)
     
@@ -18,7 +19,7 @@ def home():
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
-
+    """Register a new user."""
     form = SignUpForm()
     if request.method == 'POST':
 
@@ -78,23 +79,41 @@ def register():
 
 @app.route('/breeds/<string:pet_type>')
 def get_breeds_by_type(pet_type):
+    """Return a list of breeds for a given pet type."""
     return jsonify(get_breeds(pet_type))
+
+@app.route('pet/add/<int:pet_id>/<int:user_id>')
+def add_favorite(pet_id, user_id):
+    """Add a pet to a user's favorites."""
+    new_favorite = FavoritePet(pet_id=pet_id, user_id=user_id)
+    db.session.add(new_favorite)
+
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
+        return False
+    
+    return pet_id
 
 
 @app.route('/dashboard/<int:user_id>')
 @login_required
 def dashboard(user_id):
+    """Return a user's dashboard."""
     user = User.query.filter_by(id=user_id).first_or_404()
     favorites = FavoritePet.query.filter_by(user_id=user_id).all()
     return render_template('dashboard.html', filter=PetFilter(), user=user, favorites=favorites)
 
 @login_manager.user_loader
 def load_user(user_id):    
+    """Return a user object given a user ID."""
     return User.query.get(int(user_id))
 
 
 @app.route('/login', methods =['GET', 'POST'])
 def login():
+    """Log a user in."""
     form = LoginForm()
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -109,16 +128,20 @@ def login():
 @app.route("/logout")
 @login_required
 def logout():
+    """Log a user out."""
     logout_user()
     return redirect(url_for('login'))
 
 @login_manager.unauthorized_handler
 def unauthorized():
-  return "Sorry you must be logged in to view this page"
+  """Redirect unauthorized users to login page."""
+  flash("Sorry you must be logged in to view this page")
+  return redirect(url_for('login'))
 
 @app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def edit_profile(user_id):
+    """Edit a user's profile."""
     user = User.query.filter_by(id=user_id).first()
     preferences = Preferences.query.filter_by(user_id=user_id).first()
     form = EditProfileForm(obj=user)
@@ -148,6 +171,7 @@ def edit_profile(user_id):
 
 @app.route('/pets/<string:pet_type>', methods=['GET', 'POST'])
 def search_pets(pet_type):
+    """Return a list of pets for a given pet type."""
     breeds = get_breeds(pet_type)
     filter = PetFilter()
     filter.breed.choices = filter.breed.choices + breeds
@@ -164,6 +188,7 @@ def search_pets(pet_type):
 
 @app.route('/pet/<int:pet_id>')
 def viewPetDetails(pet_id):
+    """Return details for a given pet."""
     pet = get_pet(pet_id)
     print(pet)
     return render_template('details.html', pet_id=pet_id, pet=pet)
