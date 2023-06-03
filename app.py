@@ -6,9 +6,7 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session, flash
 from petfinder import get_pets, get_pet, get_breeds
 from filters import PetFilter
-from signup import SignUp
-from login import Login
-from edit_profile import Edit_Profile
+from forms import SignUpForm, LoginForm, EditProfileForm
 from flask_sqlalchemy import SQLAlchemy
 from database import db
 
@@ -35,7 +33,7 @@ def home():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
 
-    form = SignUp()
+    form = SignUpForm()
     if request.method == 'POST':
 
         # if fields are valid, create user
@@ -77,7 +75,7 @@ def register():
                 db.session.commit()
             except:
                 db.session.rollback()
-                return render_template('register.html', signup=SignUp(), errors=form.errors)
+                return render_template('register.html', signup=form, errors=form.errors)
             
             flash('Thanks for registering!')
             return redirect(url_for('home'))
@@ -85,32 +83,29 @@ def register():
             if form.email.errors:
                 for error in form.email.errors:
                     flash(error)
-            return render_template('register.html', signup=SignUp())
+            return render_template('register.html', signup=form)
 
 
-    return render_template('register.html', signup=SignUp())
+    return render_template('register.html', signup=form)
 
 @app.route('/breeds/<string:pet_type>')
 def get_breeds_by_type(pet_type):
     return jsonify(get_breeds(pet_type))
 
+
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    return render_template('dashboard.html', filter=PetFilter())
+
 
 @app.route('/login', methods =['GET', 'POST'])
 def login():
-    return render_template('login.html', login=Login())
-
-
-@app.route('/profile', methods = ['GET', 'POST'])
-def view_profile():
-    return render_template('profile.html', filter=PetFilter())
+    return render_template('login.html', login=LoginForm())
 
 
 @app.route('/edit_profile')
 def edit_profile():
-    return render_template('edit_profile.html', edit=Edit_Profile())
+    return render_template('edit_profile.html', edit=EditProfileForm())
 
 
 @app.route('/pets/<string:pet_type>', methods=['GET', 'POST'])
@@ -137,11 +132,5 @@ def viewPetDetails(pet_id):
 
 
 if __name__ == '__main__':
-    # if os.path.exists('pixapets.db'):
-    #     os.remove('pixapets.db')
-
-    # with app.app_context():
-    #     db.create_all()
-
     app.run(host='0.0.0.0', debug='true', port=5000)
 
