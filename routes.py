@@ -119,7 +119,8 @@ def add_favorite(pet_id, user_id):
 def dashboard(user_id):
     """Return a user's dashboard."""
     user = User.query.filter_by(id=user_id).first_or_404()
-    favorites = FavoritePet.query.filter_by(user_id=user_id).all()
+    favorites_by_id = FavoritePet.query.filter_by(user_id=user_id).all()
+    favorites = [get_pet(favorite.pet_id) for favorite in favorites_by_id]
     return render_template('dashboard.html', filter=PetFilter(), user=user, favorites=favorites)
 
 @login_manager.user_loader
