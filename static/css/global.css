@@ -148,6 +148,11 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
+.favorite-active {
+    color: white;
+    background-color: var(--primary-color);
+}
+
 .home-btn {
     background-color: white;
     border: 2px solid var(--primary-color);      
