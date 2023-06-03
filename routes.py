@@ -7,6 +7,8 @@ from database import db
 from models import User, FavoritePet, Preferences
 from flask_login import login_user, current_user, logout_user, login_required
 
+
+# publicly available routes
 @app.route('/')
 def home():
     """Return the home page."""
@@ -27,6 +29,51 @@ def home():
     return render_template('home.html', dogs=dogs_with_photos, cats=cats_with_photos, favorites=[])
 
 
+@app.route('/pets/<string:pet_type>', methods=['GET', 'POST'])
+def search_pets(pet_type):
+    """Return a list of pets for a given pet type."""
+    # get breeds for pet type
+    breeds = get_breeds(pet_type)
+    filter = PetFilter()
+    filter.breed.choices = filter.breed.choices + breeds
+
+    # if form is submitted, get pets with filters
+    if request.method == 'POST':
+        breed = filter.breed.data.lower()
+        pets = get_pets(pet_type, location=filter.location.data, distance=filter.distance.data, breed=breed, age=filter.age.data)
+    else:
+        pets = get_pets(pet_type)
+
+    # if user is logged in, get favorites
+    if current_user.is_authenticated:
+        favorite_pets = FavoritePet.query.filter_by(user_id=current_user.id).all()
+        favorite_ids = [pet.pet_id for pet in favorite_pets]
+        return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter, favorite_ids=favorite_ids)
+        
+    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter, favorite_ids=[])
+
+
+@app.route('/pet/<int:pet_id>')
+def view_pet_details(pet_id):
+    """Return details for a given pet."""
+    # get pet details
+    pet = get_pet(pet_id)
+
+    # if user is logged in, check if pet is a favorite
+    if current_user.is_authenticated:
+        is_favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=current_user.id).first()
+        return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=is_favorite)
+    
+    return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=False)
+
+
+@app.route('/breeds/<string:pet_type>')
+def get_breeds_by_type(pet_type):
+    """Return a list of breeds for a given pet type."""
+    return jsonify(get_breeds(pet_type))
+
+
+# Database routes
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     """Register a new user."""
@@ -88,47 +135,6 @@ def register():
     return render_template('register.html', signup=form)
 
 
-@app.route('/breeds/<string:pet_type>')
-def get_breeds_by_type(pet_type):
-    """Return a list of breeds for a given pet type."""
-    return jsonify(get_breeds(pet_type))
-
-@app.route('/favorite/<int:pet_id>/<int:user_id>')
-def update_favorite(pet_id, user_id):
-    """Update a user's favorites."""
-    # check if pet is already a favorite
-    favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=user_id).first()
-
-    # if pet is a favorite, remove it
-    if favorite:
-        db.session.delete(favorite)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
-            return "Tried to remove but failed"
-        return jsonify("Removed")
-    # if pet is not a favorite, add it
-    else:
-        return add_favorite(pet_id, user_id)
-
-
-def add_favorite(pet_id, user_id):
-    """Add a pet to a user's favorites."""
-    # create new favorite
-    new_favorite = FavoritePet(pet_id=pet_id, user_id=user_id)
-
-    # add favorite to database and commit change
-    db.session.add(new_favorite)
-    try:
-        db.session.commit()
-    except:
-        db.session.rollback()
-        return jsonify("Tried to add but failed")
-    
-    return jsonify("Added to favorites")
-
-
 @app.route('/dashboard/<int:user_id>')
 @login_required
 def dashboard(user_id):
@@ -136,6 +142,9 @@ def dashboard(user_id):
     # get user and favorites
     user = User.query.filter_by(id=user_id).first_or_404()
     favorites_by_id = FavoritePet.query.filter_by(user_id=user_id).all()
+    breeds = get_breeds("dog")
+    filter = PetFilter()
+    filter.breed.choices = filter.breed.choices + breeds
 
     # get pet details for each favorite
     favorites = []
@@ -154,7 +163,7 @@ def dashboard(user_id):
                 db.session.rollback()
                 return "Tried to remove but failed"
             
-    return render_template('dashboard.html', filter=PetFilter(), user=user, favorites=favorites)
+    return render_template('dashboard.html', filter=filter, user=user, favorites=favorites)
 
 
 @login_manager.user_loader
@@ -247,39 +256,37 @@ def edit_profile(user_id):
     return render_template('edit_profile.html', edit=form, user_id=user.id)
 
 
-@app.route('/pets/<string:pet_type>', methods=['GET', 'POST'])
-def search_pets(pet_type):
-    """Return a list of pets for a given pet type."""
-    # get breeds for pet type
-    breeds = get_breeds(pet_type)
-    filter = PetFilter()
-    filter.breed.choices = filter.breed.choices + breeds
+@app.route('/favorite/<int:pet_id>/<int:user_id>')
+def update_favorite(pet_id, user_id):
+    """Update a user's favorites."""
+    # check if pet is already a favorite
+    favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=user_id).first()
 
-    # if form is submitted, get pets with filters
-    if request.method == 'POST':
-        breed = filter.breed.data.lower()
-        pets = get_pets(pet_type, location=filter.location.data, distance=filter.distance.data, breed=breed, age=filter.age.data)
+    # if pet is a favorite, remove it
+    if favorite:
+        db.session.delete(favorite)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return "Tried to remove but failed"
+        return jsonify("Removed")
+    # if pet is not a favorite, add it
     else:
-        pets = get_pets(pet_type)
-
-    # if user is logged in, get favorites
-    if current_user.is_authenticated:
-        favorite_pets = FavoritePet.query.filter_by(user_id=current_user.id).all()
-        favorite_ids = [pet.pet_id for pet in favorite_pets]
-        return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter, favorite_ids=favorite_ids)
-        
-    return render_template('pets.html', pet_type=pet_type, pets=pets, filter=filter, favorite_ids=[])
+        return add_favorite(pet_id, user_id)
 
 
-@app.route('/pet/<int:pet_id>')
-def view_pet_details(pet_id):
-    """Return details for a given pet."""
-    # get pet details
-    pet = get_pet(pet_id)
+def add_favorite(pet_id, user_id):
+    """Add a pet to a user's favorites."""
+    # create new favorite
+    new_favorite = FavoritePet(pet_id=pet_id, user_id=user_id)
 
-    # if user is logged in, check if pet is a favorite
-    if current_user.is_authenticated:
-        is_favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=current_user.id).first()
-        return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=is_favorite)
+    # add favorite to database and commit change
+    db.session.add(new_favorite)
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
+        return jsonify("Tried to add but failed")
     
-    return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=False)
+    return jsonify("Added to favorites")

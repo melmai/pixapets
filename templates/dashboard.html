@@ -9,7 +9,7 @@
 </div>
 
 <section class="search-filter pt-4 pb-5 my-5">
-    <form action="{{ url_for('search_pets', pet_type=filter.pet_type.value) }}" method="POST" class="container">
+    <form id="dashboard-filter" action="/pets/dog" method="POST" class="container">
         <p>I'm looking for...</p>
         {{ filter.csrf_token }}
         <div class="row">
@@ -85,5 +85,42 @@
   {% endif %}
 </div>
 
+<!-- Dynamic form field -->
+<script>
+  const typeField = document.getElementById('pet_type');
+  const breedField = document.getElementById('breed');
+  let options;
+
+  typeField.addEventListener("change", () => {
+
+    type = typeField.value.toLowerCase();
+
+    if (type !== "all") {
+      breedField.disabled = false;
+
+      const filter = document.getElementById('dashboard-filter');
+
+      if (typeField.value === "cat") {
+        filter.setAttribute("action", "/pets/cat");
+      } else {
+        filter.setAttribute("action", "/pets/dog");
+      }
+
+      fetch(`/breeds/${type}`)
+      .then(res => res.json())
+      .then(data => {
+        options = "";
+        for (let breed of data) {
+          options += `<option value="${breed[0]}">${breed[1]}</option>`;
+        }
+        breedField.innerHTML = options;
+      })
+    } else {
+      breedField.disabled = true;
+      breedField.innerHTML = `<option value="all">All Breeds</option>`;
+    }
+  });
+
+</script>
 
 {% endblock %}
