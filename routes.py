@@ -97,7 +97,6 @@ def login():
             user = User.query.filter_by(email=form.email.data).first()
             if user and user.check_password(form.password.data):
                 login_user(user)
-                flash(f"Welcome, ${user.first_name}!")
                 return redirect(url_for('dashboard', user_id=user.id))
 
     return render_template('login.html', login=form)
@@ -112,10 +111,28 @@ def logout():
 def unauthorized():
   return "Sorry you must be logged in to view this page"
 
-@app.route('/edit_profile')
+@app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
 @login_required
-def edit_profile():
-    return render_template('edit_profile.html', edit=EditProfileForm())
+def edit_profile(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    form = EditProfileForm(obj=user)
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            user.set_password(form.password.data)
+            user.first_name = form.first_name.data
+            user.last_name = form.last_name.data
+            user.email = form.email.data
+            user.location = form.location.data
+
+            try:
+                db.session.commit()
+                flash('Profile updated successfully!')
+            except:
+                db.session.rollback()
+                flash('Error updating profile')
+
+    return render_template('edit_profile.html', edit=form, user_id=user.id)
 
 
 @app.route('/pets/<string:pet_type>', methods=['GET', 'POST'])
