@@ -85,7 +85,8 @@ def get_breeds_by_type(pet_type):
 @login_required
 def dashboard(user_id):
     user = User.query.filter_by(id=user_id).first_or_404()
-    return render_template('dashboard.html', filter=PetFilter(), user=user)
+    favorites = FavoritePet.query.filter_by(user_id=user_id).all()
+    return render_template('dashboard.html', filter=PetFilter(), user=user, favorites=favorites)
 
 @login_manager.user_loader
 def load_user(user_id):    
