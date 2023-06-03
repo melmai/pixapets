@@ -102,11 +102,18 @@ def login():
 
     return render_template('login.html', login=form)
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
 @login_manager.unauthorized_handler
 def unauthorized():
   return "Sorry you must be logged in to view this page"
 
 @app.route('/edit_profile')
+@login_required
 def edit_profile():
     return render_template('edit_profile.html', edit=EditProfileForm())
 
