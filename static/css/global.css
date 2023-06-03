@@ -66,6 +66,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ---------------------------------- 
+ *  Footer
+ * ----------------------------------*/
+footer {
+    background-color: var(--background-color);
+    text-align: center;
+    color: #fff;
+}
+
+/* ---------------------------------- 
  *  Search filter bar
  * ----------------------------------*/
 .search-filter, .user-information {
@@ -226,3 +235,4 @@ h1, h2, h3, h4, h5, h6 {
 .detail-list dd {
     font-size: .9em;
 }
+
