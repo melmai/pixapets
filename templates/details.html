@@ -2,7 +2,11 @@
 
 {% block title %} PixaPets | {{ pet["name"] | capitalize }} {% endblock %} 
 
-{% block full_width %}
+{% block stylesheets %}
+<link rel="stylesheet" href="../static/css/carousel.css">
+{% endblock %}
+
+{% block content %}
 
 <div class="container" >
   <div class="d-flex flex-row">
@@ -19,7 +23,7 @@
 </div>
 
 <div class="container">
-  <div id="carouselExample" class="carousel slide">
+  <div id="carousel" class="carousel slide">
     <div class="carousel-inner">
       {% for i in range((pet["photos"]|length)) %}
       {% if i > 0 %}
@@ -31,11 +35,11 @@
       </div>
       {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>
