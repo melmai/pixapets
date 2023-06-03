@@ -94,9 +94,9 @@ def update_favorite(pet_id, user_id):
         except:
             db.session.rollback()
             return "Tried to remove but failed"
-        return "Removed"
+        return jsonify("Removed")
     else:
-        return add_favorite(pet_id, user_id)
+        return jsonify(add_favorite(pet_id, user_id))
 
 
 def add_favorite(pet_id, user_id):
@@ -108,7 +108,7 @@ def add_favorite(pet_id, user_id):
         db.session.commit()
     except:
         db.session.rollback()
-        return "Tried to add but failed"
+        return jsonify("Tried to add but failed")
     
     return jsonify("Added to favorites")
 
