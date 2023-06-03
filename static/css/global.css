@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .favorite {
-    background-color: transparent;
+    background-color: white;
     border: 2px solid var(--primary-color);      
     color: var(--primary-color);
 }
