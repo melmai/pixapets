@@ -35,9 +35,9 @@ def get_token():
 def is_token_valid(token):
     # check if token is valid
     mod_date = os.path.getmtime(token)
-    print(f"token saved: {mod_date}")
-    print(f"token expires: {mod_date + 3600}")
-    print(f"current time: {time.time()}")
+    # print(f"token saved: {mod_date}")
+    # print(f"token expires: {mod_date + 3600}")
+    # print(f"current time: {time.time()}")
     if mod_date + 3600 < time.time():
         return False
     return True
