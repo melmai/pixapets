@@ -163,7 +163,7 @@ def dashboard(user_id):
                 db.session.rollback()
                 return "Tried to remove but failed"
             
-    return render_template('dashboard.html', filter=PetFilter(), user=user, favorites=favorites)
+    return render_template('dashboard.html', filter=filter, user=user, favorites=favorites)
 
 
 @login_manager.user_loader
