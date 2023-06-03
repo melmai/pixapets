@@ -10,6 +10,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route('/')
 def home():
     """Return the home page."""
+    # get dogs and cats with photos
     dogs = get_pets('dog', number=20)
     dogs_with_photos = [dog for dog in dogs if dog['primary_photo_cropped']]
     dogs_with_photos = dogs_with_photos[:4]
@@ -18,6 +19,7 @@ def home():
     cats_with_photos = [cat for cat in cats if cat['primary_photo_cropped']]
     cats_with_photos = cats_with_photos[:4]
 
+    # get favorites if user is logged in
     if current_user.is_authenticated:
         favorites = FavoritePet.query.filter_by(user_id=current_user.id).all()
         return render_template('home.html', dogs=dogs_with_photos, cats=cats_with_photos, favorites=favorites)
@@ -75,12 +77,13 @@ def register():
             
             flash('Thanks for registering!')
             return redirect(url_for('home'))
+        
+        # if form is not valid, flash error
         else:
             if form.email.errors:
                 for error in form.email.errors:
                     flash(error)
             return render_template('register.html', signup=form)
-
 
     return render_template('register.html', signup=form)
 
@@ -93,8 +96,10 @@ def get_breeds_by_type(pet_type):
 @app.route('/favorite/<int:pet_id>/<int:user_id>')
 def update_favorite(pet_id, user_id):
     """Update a user's favorites."""
+    # check if pet is already a favorite
     favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=user_id).first()
 
+    # if pet is a favorite, remove it
     if favorite:
         db.session.delete(favorite)
         try:
@@ -103,15 +108,18 @@ def update_favorite(pet_id, user_id):
             db.session.rollback()
             return "Tried to remove but failed"
         return jsonify("Removed")
+    # if pet is not a favorite, add it
     else:
         return add_favorite(pet_id, user_id)
 
 
 def add_favorite(pet_id, user_id):
     """Add a pet to a user's favorites."""
+    # create new favorite
     new_favorite = FavoritePet(pet_id=pet_id, user_id=user_id)
-    db.session.add(new_favorite)
 
+    # add favorite to database and commit change
+    db.session.add(new_favorite)
     try:
         db.session.commit()
     except:
@@ -121,16 +129,20 @@ def add_favorite(pet_id, user_id):
     return jsonify("Added to favorites")
 
 
-
 @app.route('/dashboard/<int:user_id>')
 @login_required
 def dashboard(user_id):
     """Return a user's dashboard."""
+    # get user and favorites
     user = User.query.filter_by(id=user_id).first_or_404()
     favorites_by_id = FavoritePet.query.filter_by(user_id=user_id).all()
+
+    # get pet details for each favorite
     favorites = []
     for favorite in favorites_by_id:
         pet = get_pet(favorite.pet_id)
+
+        # if pet is found, add it to favorites
         if pet != "pet not found":
             favorites.append(pet)
         else:
@@ -141,7 +153,9 @@ def dashboard(user_id):
             except:
                 db.session.rollback()
                 return "Tried to remove but failed"
+            
     return render_template('dashboard.html', filter=PetFilter(), user=user, favorites=favorites)
+
 
 @login_manager.user_loader
 def load_user(user_id):    
@@ -153,15 +167,31 @@ def load_user(user_id):
 def login():
     """Log a user in."""
     form = LoginForm()
+
+    # if form is submitted and valid, try to log user in
     if request.method == 'POST':
         if form.validate_on_submit():
             user = User.query.filter_by(email=form.email.data).first()
+
+            # if user exists and password is correct, log user in
             if user and user.check_password(form.password.data):
                 login_user(user)
                 next = request.args.get('next')
                 return redirect(next or url_for('dashboard', user_id=user.id))
+            # if user does not exist or password is incorrect, flash error
+            else:
+                flash('Invalid username or password')
+                return render_template('login.html', login=form)
+            
+        # if form is not valid, flash error
+        else:
+            if form.email.errors:
+                for error in form.email.errors:
+                    flash(error)
+            return render_template('login.html', login=form)
 
     return render_template('login.html', login=form)
+
 
 @app.route("/logout")
 @login_required
@@ -169,6 +199,7 @@ def logout():
     """Log a user out."""
     logout_user()
     return redirect(url_for('login'))
+
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -180,23 +211,25 @@ def unauthorized():
 @login_required
 def edit_profile(user_id):
     """Edit a user's profile."""
+    # get user and preferences
     user = User.query.filter_by(id=user_id).first()
     preferences = Preferences.query.filter_by(user_id=user_id).first()
     form = EditProfileForm(obj=user)
 
     if request.method == 'POST':
         if form.validate_on_submit():
+            # update user and preferences
             user.set_password(form.password.data)
             user.first_name = form.first_name.data
             user.last_name = form.last_name.data
             user.email = form.email.data
             user.location = form.location.data
-
             preferences.pet_type = form.pet_type.data
             preferences.distance = form.distance.data
             preferences.breed = form.breed.data
             preferences.age = form.age.data
 
+            # commit changes
             try:
                 db.session.commit()
                 flash('Profile updated successfully!')
@@ -204,22 +237,32 @@ def edit_profile(user_id):
                 db.session.rollback()
                 flash('Error updating profile')
 
+        # if form is not valid, flash error
+        else:
+            if form.email.errors:
+                for error in form.email.errors:
+                    flash(error)
+            return render_template('edit_profile.html', edit=form, user_id=user.id)
+
     return render_template('edit_profile.html', edit=form, user_id=user.id)
 
 
 @app.route('/pets/<string:pet_type>', methods=['GET', 'POST'])
 def search_pets(pet_type):
     """Return a list of pets for a given pet type."""
+    # get breeds for pet type
     breeds = get_breeds(pet_type)
     filter = PetFilter()
     filter.breed.choices = filter.breed.choices + breeds
 
+    # if form is submitted, get pets with filters
     if request.method == 'POST':
         breed = filter.breed.data.lower()
         pets = get_pets(pet_type, location=filter.location.data, distance=filter.distance.data, breed=breed, age=filter.age.data)
     else:
         pets = get_pets(pet_type)
 
+    # if user is logged in, get favorites
     if current_user.is_authenticated:
         favorite_pets = FavoritePet.query.filter_by(user_id=current_user.id).all()
         favorite_ids = [pet.pet_id for pet in favorite_pets]
@@ -231,8 +274,12 @@ def search_pets(pet_type):
 @app.route('/pet/<int:pet_id>')
 def view_pet_details(pet_id):
     """Return details for a given pet."""
+    # get pet details
     pet = get_pet(pet_id)
+
+    # if user is logged in, check if pet is a favorite
     if current_user.is_authenticated:
         is_favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=current_user.id).first()
         return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=is_favorite)
+    
     return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=False)
