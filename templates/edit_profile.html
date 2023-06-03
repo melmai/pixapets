@@ -6,10 +6,30 @@
 
 <div class="container">
   <h1 class="my-5 pink-title">User Profile</h1>
+  
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+ 
+  
+  <script>
+    var alertList = document.querySelectorAll('.alert');
+    alertList.forEach(function (alert) {
+      new bootstrap.Alert(alert)
+    })
+  </script>
+  
 </div>
 
 <!-- Registration Form -->
-<form action="POST">
+<form action="{{ url_for('edit_profile', user_id=user_id) }}" method="POST">
   {{ edit.csrf_token }}
 
   <!-- Required User Info -->
