@@ -4,6 +4,8 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 
 
 class PetFilter(FlaskForm):
+    pet_type = SelectField('Pet Type', choices=[('dogs', 'Dogs'), ('cats', 'Cats')])
+
     # location - text
     location = StringField("Location", render_kw={"placeholder": "Location"})
 

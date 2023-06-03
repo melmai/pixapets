@@ -8,6 +8,7 @@ from petfinder import get_pets, get_pet, get_breeds
 from filters import PetFilter
 from signup import SignUp
 from login import Login
+from edit_profile import Edit_Profile
 from flask_sqlalchemy import SQLAlchemy
 from database import db
 
@@ -102,9 +103,14 @@ def login():
     return render_template('login.html', login=Login())
 
 
-@app.route('/profile')
-def viewProfile():
-    return render_template('profile.html')
+@app.route('/profile', methods = ['GET', 'POST'])
+def view_profile():
+    return render_template('profile.html', filter=PetFilter())
+
+
+@app.route('/edit_profile')
+def edit_profile():
+    return render_template('edit_profile.html', edit=Edit_Profile())
 
 
 @app.route('/pets/<string:pet_type>', methods=['GET', 'POST'])
