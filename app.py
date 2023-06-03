@@ -3,8 +3,7 @@
 # This command will run the app on localhost:5000 and will allow you to see the refreshed app in your browser
 # flask --app app.py --debug run
 
-from flask import Flask, jsonify, render_template, request, redirect, url_for, session, flash
-from petfinder import get_pets, get_pet, get_breeds
+from flask import Flask
 from database import db
 
 
