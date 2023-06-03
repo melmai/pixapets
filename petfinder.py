@@ -27,11 +27,12 @@ def get_token():
     file = 'token.json'
     
     # check if token exists and is valid
-    if not os.path.isfile(file) or not is_token_valid(file):
-        token = generate_token()
-    else:
+    if os.path.isfile(file) and is_token_valid(file):
         with open(file, 'r') as f:
             token = json.load(f)
+    else: # generate new token
+        token = generate_token()
+        
 
     return token
 
