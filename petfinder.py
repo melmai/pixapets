@@ -46,14 +46,17 @@ def get_pets(pet_type, **kwargs):
     distance = int(kwargs.get('distance', 100))
     breed = kwargs.get('breed', 'all')
     age = kwargs.get('age', 'all')
+    number = kwargs.get('number', 50)
 
-    request_url = f'https://api.petfinder.com/v2/animals?type={pet_type}&limit=50'
+    request_url = f'https://api.petfinder.com/v2/animals?type={pet_type}&limit={number}'
     if location:
         request_url += f'&location={location}&distance={distance}'
     if breed != 'all':
         request_url += f'&breed={breed}'
     if age != 'all':
         request_url += f'&age={age}'
+    
+    print(request_url)
 
     # get pets
     pets = requests.get(request_url, headers={'Authorization': 'Bearer ' + token['access_token']})
@@ -61,16 +64,6 @@ def get_pets(pet_type, **kwargs):
 
     # convert to json
     return pets
-
-def get_pets_by_number(pet_type, number):
-    token = get_token()
-    
-    # get pets
-    request_url = f'https://api.petfinder.com/v2/animals?type={pet_type}&limit={number}'
-    pets = requests.get(request_url, headers={'Authorization': 'Bearer ' + token['access_token']})
-
-    # convert to json
-    return pets.json()['animals']
 
 
 def get_pet(pet_id):

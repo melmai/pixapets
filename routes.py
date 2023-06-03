@@ -1,21 +1,20 @@
 from app import app, login_manager
 from flask import jsonify, render_template, request, redirect, url_for, session, flash
-from petfinder import get_pets, get_pet, get_breeds, get_pets_by_number
+from petfinder import get_pets, get_pet, get_breeds
 from filters import PetFilter
 from forms import SignUpForm, LoginForm, EditProfileForm
 from database import db
 from models import User, FavoritePet, Preferences
 from flask_login import login_user, current_user, logout_user, login_required
-from werkzeug.security import check_password_hash
 
 @app.route('/')
 def home():
     """Return the home page."""
-    dogs = get_pets_by_number('dog', 30)
+    dogs = get_pets('dog', number=20)
     dogs_with_photos = [dog for dog in dogs if dog['primary_photo_cropped']]
     dogs_with_photos = dogs_with_photos[:4]
 
-    cats = get_pets_by_number('cat', 40)
+    cats = get_pets('cat', number=20)
     cats_with_photos = [cat for cat in cats if cat['primary_photo_cropped']]
     cats_with_photos = cats_with_photos[:4]
 
