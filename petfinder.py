@@ -35,9 +35,9 @@ def get_token():
 def is_token_valid(token):
     # check if token is valid
     mod_date = os.path.getmtime(token)
-    print(f"token saved: {mod_date}")
-    print(f"token expires: {mod_date + 3600}")
-    print(f"current time: {time.time()}")
+    # print(f"token saved: {mod_date}")
+    # print(f"token expires: {mod_date + 3600}")
+    # print(f"current time: {time.time()}")
     if mod_date + 3600 < time.time():
         return False
     return True
@@ -77,7 +77,12 @@ def get_pet(pet_id):
                         headers={'Authorization': 'Bearer ' + token['access_token']})
 
     # convert to json
-    return pet.json()['animal']
+    try:
+        pet = pet.json()['animal'] 
+    except KeyError as e: # if pet not found
+        pet = "pet not found"
+    
+    return pet
 
 def get_breeds(pet_type):
     token = get_token()
