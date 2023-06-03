@@ -5,6 +5,7 @@
 
 from flask import Flask
 from database import db
+from flask_login import LoginManager
 
 
 # Create a new Flask application instance
@@ -16,11 +17,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # init database
 with app.app_context():
     db.init_app(app)
-    from models import User, FavoritePet, Preferences
+    import models
     db.create_all()
     db.session.commit()
 
-import routes, models
+# create login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+import routes
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug='true', port=5000)

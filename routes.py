@@ -1,4 +1,4 @@
-from app import app
+from app import app, login_manager
 from flask import jsonify, render_template, request, redirect, url_for, session, flash
 from petfinder import get_pets, get_pet, get_breeds
 from filters import PetFilter
@@ -6,6 +6,7 @@ from forms import SignUpForm, LoginForm, EditProfileForm
 from database import db
 from models import User, FavoritePet, Preferences
 from flask_login import login_user, current_user, logout_user, login_required
+from werkzeug.security import check_password_hash
 
 @app.route('/')
 def home():
@@ -21,7 +22,8 @@ def register():
         # if fields are valid, create user
         if form.validate_on_submit():
             # create user object
-            new_user = User(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, password=form.password.data) 
+            new_user = User(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data) 
+            new_user.set_password(form.password.data)
 
             # set optional values for user
             if form.location.data:
@@ -70,20 +72,39 @@ def register():
 
     return render_template('register.html', signup=form)
 
+
 @app.route('/breeds/<string:pet_type>')
 def get_breeds_by_type(pet_type):
     return jsonify(get_breeds(pet_type))
 
 
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboard.html', filter=PetFilter())
+@app.route('/dashboard/<int:user_id>')
+@login_required
+def dashboard(user_id):
+    user = User.query.filter_by(id=user_id).first_or_404()
+    return render_template('dashboard.html', filter=PetFilter(), user=user)
+
+@login_manager.user_loader
+def load_user(user_id):    
+    return User.query.get(int(user_id))
 
 
 @app.route('/login', methods =['GET', 'POST'])
 def login():
-    return render_template('login.html', login=LoginForm())
+    form = LoginForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user and user.check_password(form.password.data):
+                login_user(user)
+                flash(f"Welcome, ${user.first_name}!")
+                return redirect(url_for('dashboard', user_id=user.id))
 
+    return render_template('login.html', login=form)
+
+@login_manager.unauthorized_handler
+def unauthorized():
+  return "Sorry you must be logged in to view this page"
 
 @app.route('/edit_profile')
 def edit_profile():
