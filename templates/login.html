@@ -3,26 +3,25 @@
 {% block title %} PixaPets | Login {% endblock %} 
 
 {% block content %}
-
-<h1 class="my-5 text-center">Login</h1>
-
-<div class="d-flex justify-content-center">
-  <div class="w-25">
-    <form action="{{ url_for('login') }}" method="POST">
-      {{ login.csrf_token }}
-
-      {{ login.email(class="form-control mb-2 light-bg-form-fields") }}
-      {{ login.email.label(class="mb-4") }}
-
-      {{ login.password(class="form-control mb-2 light-bg-form-fields") }}
-      {{ login.password.label(class="mb-4") }}
-
-      <div class="text-center">
-        {{ login.signin_bttn(class="rounded-pill active p-3 px-5 submit-button") }}
-      </div>
-      
-    </form>
+<div class="d-flex flex-column justify-content-center align-items-center login-container">
+  <div class="w-75">
+    <h1 class="mb-5 text-center">Login</h1>
+      <form action="{{ url_for('login') }}" method="POST">
+        {{ login.csrf_token }}
+  
+        {{ login.email(class="form-control mb-2 light-bg-form-fields") }}
+        {{ login.email.label(class="mb-4") }}
+  
+        {{ login.password(class="form-control mb-2 light-bg-form-fields") }}
+        {{ login.password.label(class="mb-4") }}
+  
+        <div class="text-center">
+          {{ login.signin_bttn(class="rounded-pill active p-3 px-5 submit-button") }}
+        </div>
+        
+      </form>
   </div>
+
 </div>
 
 {% endblock %}
