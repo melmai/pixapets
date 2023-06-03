@@ -6,12 +6,18 @@
 
 <div class="container">
   <h1 class="mt-5 pink-title">User Profile</h1>
-  <div class="alert alert-primary alert-dismissible fade show" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    {% for message in get_flashed_messages() %}
-        {{ message }}
-    {% endfor %}
-  </div>
+  
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+ 
   
   <script>
     var alertList = document.querySelectorAll('.alert');
