@@ -13,8 +13,12 @@ def home():
     """Return the home page."""
     dogs = get_pets_by_number('dog', 4)
     cats = get_pets_by_number('cat', 4)
+
+    if current_user.is_authenticated:
+        favorites = FavoritePet.query.filter_by(user_id=current_user.id).all()
+        return render_template('home.html', dogs=dogs, cats=cats, favorites=favorites)
     
-    return render_template('home.html', dogs=dogs, cats=cats)
+    return render_template('home.html', dogs=dogs, cats=cats, favorites=[])
 
 
 @app.route('/register', methods = ['GET', 'POST'])
