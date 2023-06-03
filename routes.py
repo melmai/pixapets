@@ -115,6 +115,7 @@ def unauthorized():
 @login_required
 def edit_profile(user_id):
     user = User.query.filter_by(id=user_id).first()
+    preferences = Preferences.query.filter_by(user_id=user_id).first()
     form = EditProfileForm(obj=user)
 
     if request.method == 'POST':
@@ -124,6 +125,11 @@ def edit_profile(user_id):
             user.last_name = form.last_name.data
             user.email = form.email.data
             user.location = form.location.data
+
+            preferences.pet_type = form.pet_type.data
+            preferences.distance = form.distance.data
+            preferences.breed = form.breed.data
+            preferences.age = form.age.data
 
             try:
                 db.session.commit()
