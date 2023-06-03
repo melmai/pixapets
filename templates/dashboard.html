@@ -4,7 +4,7 @@
 <link href="../static/css/card.css" rel="stylesheet" />
 {% endblock %} 
 
-{% block title %} PixaPets | Profile {% endblock %} 
+{% block title %} PixaPets | Dashboard {% endblock %} 
 
 {% block full_width %}
 
@@ -90,7 +90,7 @@
     {% endfor %}
   </div>
   {% else %}
-    <p>You have no favorites saved yet! Browse some <a href="/pets/dog">borkers</a> and <a href="pets/cat">meowers</a> that need your love.</p>
+    <p>You have no favorites saved yet! Browse some <a href="{{ url_for('search_pets', pet_type='dog') }}">borkers</a> and <a href="{{ url_for('search_pets', pet_type='cat') }}">meowers</a> that need your love.</p>
   {% endif %}
 </div>
 
