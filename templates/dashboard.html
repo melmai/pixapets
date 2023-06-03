@@ -12,17 +12,6 @@
   <h1 class="my-5 pink-title">Dashboard</h1>
 </div>
 
-<div class="container">
-  <ul class="nav user-links nav-pills">
-    <li class="nav-item d-flex align-items-center me-3">
-      <a href="/profile/{{ user.id }}" class="nav-link rounded-pill active px-4">Update Profile</a>
-    </li>
-    <li class="nav-item d-flex align-items-center">
-      <a href="{{ url_for('logout') }}" class="nav-link rounded-pill px-4">Logout</a>
-    </li>
-  </ul>
-</div>
-
 <section class="search-filter pt-4 pb-5 my-5">
     <form action="{{ url_for('search_pets', pet_type=filter.pet_type.value) }}" method="POST" class="container">
         <p>I'm looking for...</p>
@@ -55,9 +44,13 @@
     </form>
 </section>
 
-<div class="container">
-  <h2 class="mt-5">Favorites</h2>
-  <hr class="border-2 border-top w-25">
+<div class="container mt-5">
+  <div class="d-flex justify-content-between nav-item">
+    <h2>Favorites</h2>
+    <a href="/profile/{{ user.id }}" class="nav-link rounded-pill active px-4">Update Profile</a>
+</div>
+<hr class="border-2 border-top w-25">
+  
 </div>
 
 <!-- Cards of Favorite Pets -->
