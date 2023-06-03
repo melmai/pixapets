@@ -216,5 +216,7 @@ def search_pets(pet_type):
 def view_pet_details(pet_id):
     """Return details for a given pet."""
     pet = get_pet(pet_id)
-    is_favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=current_user.id).first()
-    return render_template('details.html', pet_id=pet_id, pet=pet , is_favorite=is_favorite)
+    if current_user.is_authenticated:
+        is_favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=current_user.id).first()
+        return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=is_favorite)
+    return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=False)

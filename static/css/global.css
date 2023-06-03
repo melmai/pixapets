@@ -94,9 +94,17 @@ h1, h2, h3, h4, h5, h6 {
  *  Card styles
  * ----------------------------------*/
  .image-container {
-    max-height: 300px;
+    height: 300px;
     object-fit: cover;
     overflow: hidden;
+}
+
+.image-container img {
+    object-fit: cover;
+    object-position: center;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
 }
 
 .card-name {
