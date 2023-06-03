@@ -102,7 +102,11 @@ footer {
 /* ---------------------------------- 
  *  Card styles
  * ----------------------------------*/
- .image-container {
+.card-container a {
+    text-decoration: none;
+}
+
+.image-container {
     height: 300px;
     object-fit: cover;
     overflow: hidden;
@@ -118,10 +122,13 @@ footer {
 
 .card-name {
     color: var(--primary-text);
+    font-family: var(--body-font);
+    font-size: 1.1em;
 }
 
 .card-description {
     color: var(--secondary-text);
+    font-family: var(--header-font);
 }
 
 .card:hover {
