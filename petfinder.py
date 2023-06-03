@@ -41,7 +41,7 @@ def is_token_valid(token):
 
 
 def get_pets(pet_type, **kwargs):        
-    token = get_token()
+    token = generate_token()
     location = kwargs.get('location', 98404)
     distance = int(kwargs.get('distance', 100))
     breed = kwargs.get('breed', 'all')
@@ -67,7 +67,7 @@ def get_pets(pet_type, **kwargs):
 
 
 def get_pet(pet_id):
-    token = get_token()
+    token = generate_token()
 
     # get pets
     pet = requests.get(f'https://api.petfinder.com/v2/animals/{pet_id}',
