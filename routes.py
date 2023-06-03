@@ -11,14 +11,19 @@ from werkzeug.security import check_password_hash
 @app.route('/')
 def home():
     """Return the home page."""
-    dogs = get_pets_by_number('dog', 4)
-    cats = get_pets_by_number('cat', 4)
+    dogs = get_pets_by_number('dog', 30)
+    dogs_with_photos = [dog for dog in dogs if dog['primary_photo_cropped']]
+    dogs_with_photos = dogs_with_photos[:4]
+
+    cats = get_pets_by_number('cat', 40)
+    cats_with_photos = [cat for cat in cats if cat['primary_photo_cropped']]
+    cats_with_photos = cats_with_photos[:4]
 
     if current_user.is_authenticated:
         favorites = FavoritePet.query.filter_by(user_id=current_user.id).all()
-        return render_template('home.html', dogs=dogs, cats=cats, favorites=favorites)
+        return render_template('home.html', dogs=dogs_with_photos, cats=cats_with_photos, favorites=favorites)
     
-    return render_template('home.html', dogs=dogs, cats=cats, favorites=[])
+    return render_template('home.html', dogs=dogs_with_photos, cats=cats_with_photos, favorites=[])
 
 
 @app.route('/register', methods = ['GET', 'POST'])
@@ -216,5 +221,7 @@ def search_pets(pet_type):
 def view_pet_details(pet_id):
     """Return details for a given pet."""
     pet = get_pet(pet_id)
-    is_favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=current_user.id).first()
-    return render_template('details.html', pet_id=pet_id, pet=pet , is_favorite=is_favorite)
+    if current_user.is_authenticated:
+        is_favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=current_user.id).first()
+        return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=is_favorite)
+    return render_template('details.html', pet_id=pet_id, pet=pet, is_favorite=False)
