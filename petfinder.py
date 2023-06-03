@@ -25,7 +25,9 @@ def generate_token():
 def get_token():
     """Gets token if not expired, otherwise generates a new one"""
     file = 'token.json'
-    if not is_token_valid(file):
+    
+    # check if token exists and is valid
+    if not os.path.isfile(file) or not is_token_valid(file):
         token = generate_token()
     else:
         with open(file, 'r') as f:
