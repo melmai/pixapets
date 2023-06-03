@@ -97,7 +97,8 @@ def login():
             user = User.query.filter_by(email=form.email.data).first()
             if user and user.check_password(form.password.data):
                 login_user(user)
-                return redirect(url_for('dashboard', user_id=user.id))
+                next = request.args.get('next')
+                return redirect(next or url_for('dashboard', user_id=user.id))
 
     return render_template('login.html', login=form)
 
@@ -105,7 +106,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 @login_manager.unauthorized_handler
 def unauthorized():
