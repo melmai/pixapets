@@ -21,7 +21,7 @@ def home():
 
     if current_user.is_authenticated:
         favorites = FavoritePet.query.filter_by(user_id=current_user.id).all()
-        return render_template('home.html', dogs=dogs, cats=cats, favorites=favorites)
+        return render_template('home.html', dogs=dogs_with_photos, cats=cats_with_photos, favorites=favorites)
     
     return render_template('home.html', dogs=dogs_with_photos, cats=cats_with_photos, favorites=[])
 
