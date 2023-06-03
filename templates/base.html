@@ -27,13 +27,22 @@
           </li>
       </ul>
       <ul class="nav user-links nav-pills">
-            <li class="nav-item d-flex align-items-center me-3">
-              <a href="{{ url_for('login') }}" class="nav-link rounded-pill">Login</a>
-            </li>
-            <li class="nav-item d-flex align-items-center">
-              <a href="{{ url_for('register') }}" class="nav-link rounded-pill active">Signup</a>
-            </li>
-          </ul>
+        {% if current_user.is_authenticated %}
+        <li class="nav-item d-flex align-items-center me-3">
+          <a href="{{ url_for('logout') }}" class="nav-link rounded-pill">Logout</a>
+        </li>
+        <li class="nav-item d-flex align-items-center me-3">
+          <a href="{{ url_for('dashboard', user_id=current_user.id) }}" class="nav-link rounded-pill active">Dashboard</a>
+        </li>
+        {% else %}
+        <li class="nav-item d-flex align-items-center me-3">
+          <a href="{{ url_for('login') }}" class="nav-link rounded-pill">Login</a>
+        </li>
+        <li class="nav-item d-flex align-items-center">
+          <a href="{{ url_for('register') }}" class="nav-link rounded-pill active">Signup</a>
+        </li>
+        {% endif %}
+      </ul>
     </header>
     {% block hero %}{% endblock %}
     {% block filter %}{% endblock %}
