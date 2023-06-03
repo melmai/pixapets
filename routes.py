@@ -209,5 +209,5 @@ def search_pets(pet_type):
 def viewPetDetails(pet_id):
     """Return details for a given pet."""
     pet = get_pet(pet_id)
-    print(pet)
-    return render_template('details.html', pet_id=pet_id, pet=pet)
+    is_favorite = FavoritePet.query.filter_by(pet_id=pet_id, user_id=current_user.id).first()
+    return render_template('details.html', pet_id=pet_id, pet=pet , is_favorite=is_favorite)
