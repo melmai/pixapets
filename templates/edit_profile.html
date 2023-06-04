@@ -3,7 +3,6 @@
 {% block title %} PixaPets | Edit Profile {% endblock %} 
 
 {% block full_width %}
-
 <div class="container">
   <h1 class="my-5 pink-title">User Profile</h1>
   
@@ -17,7 +16,6 @@
       </div>
       {% endif %}
     {% endwith %}
- 
   
   <script>
     var alertList = document.querySelectorAll('.alert');
@@ -108,37 +106,9 @@
       </div>
     </section>
   </div>
-
 </form>
+{% endblock %}
 
-<!-- Dynamic form field -->
-<script>
-  const typeField = document.getElementById('pet_type');
-  const breedField = document.getElementById('breed');
-  let options;
-
-  typeField.addEventListener("change", () => {
-
-    type = typeField.value.toLowerCase();
-
-    if (type !== "all") {
-      breedField.disabled = false;
-
-      fetch(`/breeds/${type}`)
-      .then(res => res.json())
-      .then(data => {
-        options = "";
-        for (let breed of data) {
-          options += `<option value="${breed[0]}">${breed[1]}</option>`;
-        }
-        breedField.innerHTML = options;
-      })
-    } else {
-      breedField.disabled = true;
-      breedField.innerHTML = `<option value="all">All Breeds</option>`;
-    }
-  });
-
-</script>
-
+{% block javascripts %}
+<script src="../static/js/preferences.js"></script>
 {% endblock %}
