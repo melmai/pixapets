@@ -241,18 +241,20 @@ def edit_profile(user_id):
             # commit changes
             try:
                 db.session.commit()
-                flash('Profile updated successfully!')
-            except:
+            except Exception as e:
                 db.session.rollback()
                 flash('Error updating profile')
+                return render_template('edit_profile.html', edit=form, user_id=user.id)
 
+            flash('Profile updated successfully!')
         # if form is not valid, flash error
         else:
-            if form.email.errors:
-                for error in form.email.errors:
-                    flash(error)
+            if form.errors:
+                for error in form.errors:
+                    flash(f"{error}")
             return render_template('edit_profile.html', edit=form, user_id=user.id)
 
+    flash('wtf')
     return render_template('edit_profile.html', edit=form, user_id=user.id)
 
 
